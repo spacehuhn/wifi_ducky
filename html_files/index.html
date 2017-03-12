@@ -1,0 +1,43 @@
+<!Doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="style.css">
+		<script src="functions.js"></script>
+	</head>
+	<body>
+		<div id="content">
+			<h1>Scripts</h1>
+			<table id="scriptList">
+				<tr>
+					<td><a href="view.html">example</a></td>
+					<td>12.03.2017 20:14</td>
+					<td><button class="warnBtn">delete</button></td>
+					<td><button class="selectBtn">run</button></td>
+				</tr>
+			</table>
+			<a class="button" href="upload.html">upload new script</a>
+		</div>
+		<script>
+			var list;
+			var table = document.getElementById("scriptList");
+			
+			function loadList(){
+				getResponse("list.json",function(responseText){
+					list = JSON.parse(responseText);
+					var tableHTML = "";
+					for(var i=0;i<list.length;i++){
+						tableHTML += "<tr>";
+						tableHTML += "<td><a href='view?"+list[i].n+"'>"+list[i].n+"</a></td>";
+						tableHTML += "<td><button class='warnBtn'>delete</button></td>";
+						tableHTML += "<td><button class='selectBtn'>run</button></td>";
+						tableHTML += "</tr>";
+					}
+					table.innerHTML = tableHTML;
+				});
+			}
+			
+			loadList();
+		</script>
+	</body>
+</html>
