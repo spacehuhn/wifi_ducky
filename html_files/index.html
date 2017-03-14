@@ -4,31 +4,28 @@
 		<meta charset="utf-8">
 		<link rel="stylesheet" href="style.css">
 		<script src="functions.js"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=0.8">
 	</head>
 	<body>
 		<div id="content">
 			<h1>Scripts</h1>
-			<table id="scriptList">
-				<tr>
-					<td><a href="view.html">example</a></td>
-					<td>12.03.2017 20:14</td>
-					<td><button class="warnBtn">delete</button></td>
-					<td><button class="selectBtn">run</button></td>
-				</tr>
+			<table id="scriptlist">
+				
 			</table>
 			<a class="button" href="upload.html">upload new script</a>
 		</div>
 		<script>
-			var list;
-			var table = document.getElementById("scriptList");
+			var res;
+			var table = document.getElementById("scriptlist");
 			
-			function loadList(){
+			function loadlist(){
 				getResponse("list.json",function(responseText){
-					list = JSON.parse(responseText);
+					res = JSON.parse(responseText);
 					var tableHTML = "";
-					for(var i=0;i<list.length;i++){
+					for(var i=0;i<res.list.length;i++){
 						tableHTML += "<tr>";
-						tableHTML += "<td><a href='view?"+list[i].n+"'>"+list[i].n+"</a></td>";
+						tableHTML += "<td><a href='view?n="+res.list[i].n+"'>"+res.list[i].n+"</a></td>";
+						tableHTML += "<td>"+res.list[i].s+"</td>";
 						tableHTML += "<td><button class='warnBtn'>delete</button></td>";
 						tableHTML += "<td><button class='selectBtn'>run</button></td>";
 						tableHTML += "</tr>";
@@ -37,7 +34,7 @@
 				});
 			}
 			
-			loadList();
+			loadlist();
 		</script>
 	</body>
 </html>
