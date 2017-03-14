@@ -16,15 +16,22 @@ extern char* data_getUploadHTML();
 
 void viewScript(){
   int i = 0;
-  for(int a=0;a<sizeof(data_websiteBuffer);a++) data_websiteBuffer[a] = 0;
   if(server.hasArg("n")){
     File f = SPIFFS.open("/"+server.arg("n"), "r");
+    
+    server.sendHeader("Content-Length", (String)f.size());
+    server.send(200, "text/plain", "");
+    
     while(f.available() && i<sizeof(data_websiteBuffer)){
       data_websiteBuffer[i] = f.read();
       i++;
+      if(i >= sizeof(data_websiteBuffer)){
+        server.sendContent_P(data_websiteBuffer, i);
+        i = 0;
+      }
     }
   }
-  server.send(200, "text/plain", data_websiteBuffer);
+  if(i > 0) server.sendContent_P(data_websiteBuffer, i);
 }
 
 //format bytes
