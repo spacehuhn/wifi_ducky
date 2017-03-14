@@ -13,14 +13,13 @@ extern char* data_getStyleCSS();
 extern char* data_getError404();
 extern char* data_getIndexHTML();
 extern char* data_getUploadHTML();
-//extern static char data_websiteBuffer[3000];
 
-void getScript(){
+void viewScript(){
   int i = 0;
   for(int a=0;a<sizeof(data_websiteBuffer);a++) data_websiteBuffer[a] = 0;
   if(server.hasArg("n")){
-    File f = SPIFFS.open(server.arg("n"), "r");
-    while(f.available()){
+    File f = SPIFFS.open("/"+server.arg("n"), "r");
+    while(f.available() && i<sizeof(data_websiteBuffer)){
       data_websiteBuffer[i] = f.read();
       i++;
     }
@@ -83,7 +82,7 @@ void setup() {
   server.on("/style.css",[](){ server.send(200, "text/css", data_getStyleCSS()); });
   server.on("/functions.js",[](){ server.send(200, "text/javascript", data_getFunctionsJS()); });
   server.on("/list.json", getScriptList);
-  server.on("/view", getScript);
+  server.on("/view", viewScript);
   server.on("/",[](){ server.send(200, "text/html", data_getIndexHTML()); });
 
   //handle upload
