@@ -10,9 +10,15 @@
 ESP8266WebServer server(80);
 FSInfo fs_info;
 extern char* data_getStyleCSS();
-extern char* data_getError404();
+extern size_t data_getError404();
 extern char* data_getIndexHTML();
 extern char* data_getUploadHTML();
+
+void sendBuffer(int code, String type, size_t _size){
+  server.sendHeader("Content-Length", (String)_size);
+  server.send(code, type, "");
+  server.sendContent_P(data_websiteBuffer, _size);
+}
 
 void viewScript(){
   int i = 0;
@@ -83,7 +89,7 @@ void setup() {
   //SPIFFS.format();
   SPIFFS.info(fs_info);
 
-  server.onNotFound([](){ server.send(404, "text/html", data_getError404()); });
+  server.onNotFound([](){ sendBuffer(404, "text/html", data_getError404()); });
   
   server.on("/upload.html",[](){ server.send(200, "text/html", data_getUploadHTML()); });
   server.on("/style.css",[](){ server.send(200, "text/css", data_getStyleCSS()); });
