@@ -1,77 +1,58 @@
 #include <ESP8266WiFi.h>
-#include <ESP8266WebServer.h>
-#include <ESP8266mDNS.h>
 #include <FS.h>
+#include <ESP8266mDNS.h>
+#include <ESPAsyncTCP.h>
+#include <ESPAsyncWebServer.h>
+#include <SPIFFSEditor.h>
 #include <EEPROM.h>
 #include "data.h"
 
-#define BAUD_RATE 115200
+#define BAUD_RATE 250000
 
-ESP8266WebServer server(80);
+AsyncWebServer server(80);
 FSInfo fs_info;
-extern char* data_getStyleCSS();
-extern size_t data_getError404();
-extern char* data_getIndexHTML();
-extern char* data_getUploadHTML();
 
-void sendBuffer(int code, String type, size_t _size){
-  server.sendHeader("Content-Length", (String)_size);
-  server.send(code, type, "");
-  server.sendContent_P(data_websiteBuffer, _size);
-}
+extern const uint8_t data_indexHTML[] PROGMEM;
+extern const uint8_t data_error404[] PROGMEM;
+extern const uint8_t data_styleCSS[] PROGMEM;
+extern const uint8_t data_functionsJS[] PROGMEM;
+extern String formatBytes(size_t bytes);
 
-void viewScript(){
-  int i = 0;
-  if(server.hasArg("n")){
-    File f = SPIFFS.open("/"+server.arg("n"), "r");
-    
-    server.sendHeader("Content-Length", (String)f.size());
-    server.send(200, "text/plain", "");
-    
-    while(f.available() && i<sizeof(data_websiteBuffer)){
-      data_websiteBuffer[i] = f.read();
-      i++;
-      if(i >= sizeof(data_websiteBuffer)){
-        server.sendContent_P(data_websiteBuffer, i);
-        i = 0;
-      }
-    }
+bool runLine = false;
+bool runScript = false;
+File script;
+
+void handleUpload(AsyncWebServerRequest *request, String filename, size_t index, uint8_t *data, size_t len, bool final){
+  File f;
+  String _name = filename;
+  
+  if(!_name.startsWith("/")) _name = "/"+_name;
+  
+  if(!index){
+    //Serial.printf("UploadStart: %s\n", filename.c_str());
+    f = SPIFFS.open(_name, "w");
+  } else{
+    f = SPIFFS.open(_name, "a");
   }
-  if(i > 0) server.sendContent_P(data_websiteBuffer, i);
-}
-
-//format bytes
-String formatBytes(size_t bytes){
-  if (bytes < 1024){
-    return String(bytes)+" B";
-  } else if(bytes < (1024 * 1024)){
-    return String(bytes/1024.0)+" KB";
-  } else if(bytes < (1024 * 1024 * 1024)){
-    return String(bytes/1024.0/1024.0)+" MB";
-  } else {
-    return String(bytes/1024.0/1024.0/1024.0)+" GB";
+  
+  //Serial.write(data,len);
+  f.write(data, len);
+  
+  if(final){
+    //Serial.printf("UploadEnd: %s, %u B\n", filename.c_str(), index+len);
+    f.close();
   }
 }
 
-void getScriptList() {
-  Dir dir = SPIFFS.openDir("");
-  String output;
-  output += "{";
-  output += "\"totalBytes\":"+(String)fs_info.totalBytes+",";
-  output += "\"usedBytes\":"+(String)fs_info.usedBytes+",";
-  output += "\"list\":[ ";
-  while(dir.next()){
-    File entry = dir.openFile("r");
-    String filename = String(entry.name()).substring(1);
-    output += '{';
-    output += "\"n\":\""+filename+"\",";  //name
-    output += "\"s\":\""+formatBytes(entry.size())+"\"";          //size
-    output += "},";
-    entry.close();
-  }
-  output = output.substring(0, output.length()-1);
-  output += "]}";
-  server.send(200, "text/json", output);
+void send404(AsyncWebServerRequest *request){
+  AsyncWebServerResponse *response = request->beginResponse_P(200, "text/html", data_error404, sizeof(data_error404));
+  request->send(response);
+}
+
+void sendToIndex(AsyncWebServerRequest *request){
+  AsyncWebServerResponse *response = request->beginResponse(302, "text/plain", "");
+  response->addHeader("Location","/");
+  request->send(response);
 }
 
 void setup() {
@@ -83,51 +64,125 @@ void setup() {
 
   Serial.begin(BAUD_RATE);
   delay(2000);
-  Serial.println();
+  //Serial.println();
 
   SPIFFS.begin();
-  //SPIFFS.format();
-  SPIFFS.info(fs_info);
 
-  server.onNotFound([](){ sendBuffer(404, "text/html", data_getError404()); });
-  
-  server.on("/upload.html",[](){ server.send(200, "text/html", data_getUploadHTML()); });
-  server.on("/style.css",[](){ server.send(200, "text/css", data_getStyleCSS()); });
-  server.on("/functions.js",[](){ server.send(200, "text/javascript", data_getFunctionsJS()); });
-  server.on("/list.json", getScriptList);
-  server.on("/view", viewScript);
-  server.on("/",[](){ server.send(200, "text/html", data_getIndexHTML()); });
+  MDNS.addService("http","tcp",80);
 
-  //handle upload
-  server.on("/upload", HTTP_POST, [](){
-    server.sendHeader("Location", "/", true);
-    server.send ( 302, "text/plain", "");
-  },[](){
-    HTTPUpload& upload = server.upload();
-    if(upload.totalSize > 0){
-      File fsUploadFile;
-      
-      String filename = upload.filename;
-      if(!filename.startsWith("/")) filename = "/"+filename;
-        
-      Serial.println("uploading: "+filename+" ("+ (String)upload.totalSize+ "b)...");
-        
-      fsUploadFile = SPIFFS.open(filename, "a");
-      
-      fsUploadFile.write(upload.buf, upload.currentSize);
-      //Serial.write(upload.buf, upload.currentSize);
-      
-      fsUploadFile.close();
-      Serial.println("upload done!");
-      yield();
-    }
+  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
+    AsyncWebServerResponse *response = request->beginResponse_P(200, "text/html", data_indexHTML, sizeof(data_indexHTML));
+    request->send(response);
   });
-    
-  server.begin();
 
-  Serial.println("started");
+  server.on("/style.css", HTTP_GET, [](AsyncWebServerRequest *request){
+    AsyncWebServerResponse *response = request->beginResponse_P(200, "text/css", data_styleCSS, sizeof(data_styleCSS));
+    request->send(response);
+  });
+
+  server.on("/functions.js", HTTP_GET, [](AsyncWebServerRequest *request){
+    AsyncWebServerResponse *response = request->beginResponse_P(200, "text/javascript", data_functionsJS, sizeof(data_functionsJS));
+    request->send(response);
+  });
+
+
+  server.on("/list.json", HTTP_GET, [](AsyncWebServerRequest *request){
+    SPIFFS.info(fs_info);
+    Dir dir = SPIFFS.openDir("");
+    String output;
+    output += "{";
+    output += "\"totalBytes\":"+(String)fs_info.totalBytes+",";
+    output += "\"usedBytes\":"+(String)fs_info.usedBytes+",";
+    output += "\"list\":[ ";
+    while(dir.next()){
+      File entry = dir.openFile("r");
+      String filename = String(entry.name()).substring(1);
+      output += '{';
+      output += "\"n\":\""+filename+"\",";//name
+      output += "\"s\":\""+formatBytes(entry.size())+"\"";//size 
+      output += "},";
+      entry.close();
+    }
+    output = output.substring(0, output.length()-1);
+    output += "]}";
+    request->send(200, "text/json", output);
+  });
+
+  server.on("/view", HTTP_GET, [](AsyncWebServerRequest *request){
+    if(request->hasArg("n")){
+      String _name = request->arg("n");
+      request->send(SPIFFS, "/"+_name, "text/plain");
+    }else send404(request);
+  });
+
+  server.on("/run", HTTP_GET, [](AsyncWebServerRequest *request){
+    if(request->hasArg("n")){
+      String _name = request->arg("n");
+      script = SPIFFS.open("/"+_name, "r");
+      runScript = true;
+      runLine = true;
+      /*
+      while(f.available() && outc <2000){
+        Serial.write(f.read());
+      }*/
+      request->send(200, "text/plain", "true");
+    }else if(request->hasArg("script")){
+      Serial.println(request->arg("script"));
+      sendToIndex(request);
+    } else send404(request);
+  });
+
+  server.on("/delete", HTTP_GET, [](AsyncWebServerRequest *request){
+    if(request->hasArg("n")){
+      String _name = request->arg("n");
+      SPIFFS.remove("/"+_name);
+      request->send(200, "text/plain", "true");
+    }else send404(request);
+  });
+
+  server.on("/format", HTTP_GET, [](AsyncWebServerRequest *request){
+    SPIFFS.format();
+    request->send(200, "text/plain", "true");
+    sendToIndex(request);
+  });
+
+  server.on("/upload", HTTP_POST, [](AsyncWebServerRequest *request){
+    sendToIndex(request);
+  }, handleUpload);
+  
+  server.onNotFound([](AsyncWebServerRequest *request){
+    send404(request);
+  });
+  
+
+  server.begin();
+  
+  //Serial.println("started");
 }
   
 void loop() {
-  server.handleClient();
+  if(Serial.available() > 0) {
+    byte answer = Serial.read();
+    if(answer == 0x99) {
+      //Serial.println("REM done");
+      runLine = true;
+    }
+  }
+
+  if(runScript){
+    char nextChar;
+    if(runLine){
+      if(script.available()){
+        char nextChar = script.read();
+        Serial.write(nextChar);
+        if(nextChar == 0x0D) runLine = false;
+      }else{
+        script.close();
+        runLine = false;
+        runScript = false;
+      }
+    }
+  }
+  
 }
+
