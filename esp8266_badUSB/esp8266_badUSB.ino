@@ -2,12 +2,12 @@
 #include <FS.h>
 #include <ESP8266mDNS.h>
 #include <ESPAsyncTCP.h>
-#include <ESPAsyncWebServer.h>
+#include <ESPAsyncWebServer.h>nnnnnnnnnnnnnnnn
 #include <SPIFFSEditor.h>
 #include <EEPROM.h>
 #include "data.h"
 
-#define BAUD_RATE 250000
+#define BAUD_RATE 115200
 
 AsyncWebServer server(80);
 FSInfo fs_info;
@@ -16,11 +16,17 @@ extern const uint8_t data_indexHTML[] PROGMEM;
 extern const uint8_t data_error404[] PROGMEM;
 extern const uint8_t data_styleCSS[] PROGMEM;
 extern const uint8_t data_functionsJS[] PROGMEM;
-extern String formatBytes(size_t bytes);
+extern String formatBytes(size_t bytes);nnnnnnnnnnn
 
 bool runLine = false;
 bool runScript = false;
 File script;
+
+const int bufferSize = 600;
+uint8_t scriptBuffer[bufferSize];
+uint8_t scriptLineBuffer[bufferSize];
+int bc = 0; //buffer counter
+int lc = 0; //line buffer counter
 
 void handleUpload(AsyncWebServerRequest *request, String filename, size_t index, uint8_t *data, size_t len, bool final){
   File f;
@@ -159,7 +165,22 @@ void setup() {
   
   //Serial.println("started");
 }
-  
+
+void sendBuffer(){
+  for(int i=0;i<bc;i++) Serial.write((char)scriptBuffer[i]);
+  runLine = false;
+  bc = 0;
+}
+
+void addToBuffer(){
+  if(bc + lc > bufferSize) sendBuffer();
+  for(int i=0;i<lc;i++){
+    scriptBuffer[bc] = scriptLineBuffer[i];
+    bc++;
+  }
+  lc = 0;
+}
+
 void loop() {
   if(Serial.available() > 0) {
     byte answer = Serial.read();
@@ -169,18 +190,18 @@ void loop() {
     }
   }
 
-  if(runScript){
-    char nextChar;
-    if(runLine){
-      if(script.available()){
-        char nextChar = script.read();
-        Serial.write(nextChar);
-        if(nextChar == 0x0D) runLine = false;
-      }else{
-        script.close();
-        runLine = false;
-        runScript = false;
-      }
+  if(runScript && runLine){
+    if(script.available()){
+      uint8_t nextChar = script.read();
+      //Serial.write(nextChar);
+      scriptLineBuffer[lc] = nextChar;
+      lc++;
+      if(nextChar == 0x0D || lc == bufferSize) addToBuffer();
+    }else{
+      addToBuffer();
+      if(bc > 0) sendBuffer();
+      runScript = false;
+      script.close();
     }
   }
   
