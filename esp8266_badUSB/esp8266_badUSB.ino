@@ -2,7 +2,7 @@
 #include <FS.h>
 #include <ESP8266mDNS.h>
 #include <ESPAsyncTCP.h>
-#include <ESPAsyncWebServer.h>nnnnnnnnnnnnnnnn
+#include <ESPAsyncWebServer.h>
 #include <SPIFFSEditor.h>
 #include <EEPROM.h>
 #include "data.h"
@@ -16,7 +16,7 @@ extern const uint8_t data_indexHTML[] PROGMEM;
 extern const uint8_t data_error404[] PROGMEM;
 extern const uint8_t data_styleCSS[] PROGMEM;
 extern const uint8_t data_functionsJS[] PROGMEM;
-extern String formatBytes(size_t bytes);nnnnnnnnnnn
+extern String formatBytes(size_t bytes);
 
 bool runLine = false;
 bool runScript = false;
