@@ -5,9 +5,11 @@ Upload, save and run keystroke injections remotely with an ESP8266 + ATmega32u4 
 - [Introduction](#introduction)
   - [What it is](#what-it-is)
   - [How it works](#how-it-works)
+  - [The benefits of Wi-Fi](#the-benefits-of-wi-fi)
 - [Disclaimer](#disclaimer)
 - [Installation](#installation)
-  - [ESP8266](#flash-the-esp8266)  
+  - [Preparation](#preparation)  
+  - [ESP8266](#esp8266)
   - [Arduino ATmega32u4](#arduino-atmega32u4)
   - [Digispark ATtiny85](#digispark-aTtiny85)
   - [Wire everything up](#wire-everything-up)
@@ -56,7 +58,7 @@ Use it only for testing purposes on your own devices!
 
 ## Installation
 
-Happy hacking :)
+coming soon.. I guess?
 
 ## FAQ
 
