@@ -1,5 +1,5 @@
 # Wi-Fi Ducky
-Upload, save and run keystroke injections remotely with an ESP8266 + ATmega32u4 or ATtiny85
+Upload, save and run keystroke injections remotely with an ESP8266 + ATmega32u4
 
 ## Contents
 - [Introduction](#introduction)
@@ -14,7 +14,7 @@ Upload, save and run keystroke injections remotely with an ESP8266 + ATmega32u4 
   - [Digispark ATtiny85](#digispark-aTtiny85)
   - [Wire everything up](#wire-everything-up)
 - [How to use it](#how-to-use-it)
-- [FAQ](#faq)
+- [Improvements](#improvements)
 - [License](#license)
 - [Sources and additional links](#sources-and-additional-links)
 
@@ -25,17 +25,17 @@ Upload, save and run keystroke injections remotely with an ESP8266 + ATmega32u4 
 It's a Wi-Fi controlled BadUSB device to remotely execute Ducky Scripts. 
 
 Using a USB device which act as a keyboard to inject keystrokes is well kown these days. 
-The [USB Rubber Ducky](https://hakshop.com/products/usb-rubber-ducky-deluxe) by [Hak5](https://www.hak5.org/) is THE hacker gadget for this kind of attack. It introduced a simple script language called *Ducky Script*, which we will be using for this project too.  
+The [USB Rubber Ducky](https://hakshop.com/products/usb-rubber-ducky-deluxe) by [Hak5](https://www.hak5.org/) is THE hacker gadget for this kind of attack. It introduced a simple script language called *Ducky Script*, which this project uses too.
 
 ### How it works
 
-I will use an ESP8266 for this project. This tiny Wi-Fi chip has its own file system called [SPIFFS](https://github.com/esp8266/Arduino/blob/master/doc/filesystem.md). It doesn't replace a micro-sd card, but should be enough for most of your payloads.  
+I will use an ESP8266 for this project. This tiny Wi-Fi chip has its own file system called [SPIFFS](https://github.com/esp8266/Arduino/blob/master/doc/filesystem.md). It doesn't replace a micro-sd card, but it should be enough for most of your payloads.  
 
-Although the ESP8266 is awesome, it doesn't have native USB :(  
-(@cnlohr made a cool project on this and added a USB stack himself: https://github.com/cnlohr/espusb. The problem with that is that it isn't compatible with the current SDK version, also I wanted to use Arduino to make it more user friendly.)  
+Although the ESP8266 is awesome, it doesn't have native USB, which means it can't act as a keyboard :(  
+([cnlohr](https://github.com/cnlohr) made a cool project on this and added a USB stack himself: https://github.com/cnlohr/espusb. The problem with that is that it isn't compatible with the current SDK version, also I wanted to use Arduino to make it more user friendly.)  
 
 Here comes the ATmega32u4 into play!  
-It can act as keyboard and thanks to @seytonic run Ducky Script [link](https://github.com/Seytonic/Duckduino-microSD).  
+It can act as keyboard and thanks to [Seytonic](http://youtube.com/seytonic) run Ducky Script [link](https://github.com/Seytonic/Duckduino-microSD).  
 So what I did is connecting the ATmega to the ESP8266 via serial.
 
 The ESP will open up a Wi-Fi access point and host a webinterface from what you can upload and manage and your scripts.  
@@ -48,19 +48,28 @@ With Wi-Fi you can upload and run your Ducky Script payloads remotely, which can
 You just need to plug the device in, connect to its Wi-Fi network and you have full control over the target machine.  
 
 It also adds a lot of possibilites for different attacks.   
-You could make the target download executables from the Wi-Fi chip instead from the internet.
+You could make the target download executables from the Wi-Fi chip instead of the internet.
 Or execute different attacks and send the results back to the Chip. Or open up a reverse shell on the ESP8266s Wi-Fi.  
 And so on... there are so much possibilities!
 
 ## Disclaimer
 
-Use it only for testing purposes on your own devices!
+Use it only for testing purposes on your own devices!  
+I don't take any responsibility for what you do with this project.  
 
 ## Installation
 
 coming soon.. I guess?
 
-## FAQ
+## Improvements
+
+My wishlist:
+- add support for digispark (ATtiny85) as alternative for the ATmega32u4
+- change settings within the webinterface
+- full support of all Ducky Script commands (REPLAY is missing)
+- auto execute scripts
+- add mouse
+- control over the internet (login to Wi-Fi to connect to a socket)
 
 ## License
 
