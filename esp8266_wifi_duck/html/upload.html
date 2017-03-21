@@ -6,14 +6,11 @@
 		<meta name="viewport" content="width=device-width, initial-scale=0.8">
 	</head>
 	<body>
-		<div id="content">
-			<h1>Upload new Script</h1>
-			<form action="/upload" method="POST" enctype="multipart/form-data">
-				<input type='file' name='update'>
-				<br />
-				<br />
-				<input type='submit' value='upload'>
-			</form>
-		</div>
+		<h1>Flash New Firmware</h1>
+		<form method='POST' action='/update' enctype='multipart/form-data'>
+			<input type='file' name='update'>
+			<br />
+			<input type='submit' value='Update'>
+		</form>
 	</body>
 </html>
