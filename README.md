@@ -67,7 +67,7 @@ Then connect the RX (Arduino) to TX (ESP8266) and TX (Arduino) to RX (ESP8266).
 
 ---
 
-### Preperation
+### Preparation
 
 What you will need:
 - **an ESP8266 Wi-Fi chip**  
