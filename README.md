@@ -11,7 +11,6 @@ Upload, save and run keystroke injections remotely with an ESP8266 + ATmega32u4
   - [Preparation](#preparation)  
   - [ESP8266](#esp8266)
   - [Arduino ATmega32u4](#arduino-atmega32u4)
-  - [Digispark ATtiny85](#digispark-aTtiny85)
   - [Wire everything up](#wire-everything-up)
 - [How to use it](#how-to-use-it)
 - [Improvements](#improvements)
@@ -32,25 +31,25 @@ The [USB Rubber Ducky](https://hakshop.com/products/usb-rubber-ducky-deluxe) by 
 I will use an ESP8266 for this project. This tiny Wi-Fi chip has its own file system called [SPIFFS](https://github.com/esp8266/Arduino/blob/master/doc/filesystem.md). It doesn't replace a micro-sd card, but it should be enough for most payloads.  
 
 Although the ESP8266 is awesome, it doesn't have native USB, which means it can't act as a keyboard :(  
-([cnlohr](https://github.com/cnlohr) made a cool project on this and added a USB stack himself: https://github.com/cnlohr/espusb. The problem with that is that it isn't compatible with the current SDK version, also I wanted to use Arduino to make it more user friendly.)  
+([cnlohr](https://github.com/cnlohr) made a cool project on this and added a USB stack himself: https://github.com/cnlohr/espusb. The problem with that is, that it isn't compatible with the current SDK version, also I wanted to use Arduino to make it more user friendly.)  
 
 Here comes the ATmega32u4 into play!  
 It can act as keyboard and thanks to [Seytonic](http://youtube.com/seytonic) run Ducky Script ([link](https://github.com/Seytonic/Duckduino-microSD)).  
 So what I did is connecting the ATmega to the ESP8266 via serial.
 
 The ESP will open up a Wi-Fi access point and host a webinterface from what you can upload and manage your scripts.  
-When you hit run, it will send the script to the ATmega which then will execute it on the target machine.  
+When you hit run, it will send the script to the ATmega, which then will execute it on the target machine.  
 
 ### The benefits of adding Wi-Fi ###
 
 **But why add Wi-Fi** ...you might ask.  
-With Wi-Fi you can upload and run your Ducky Script payloads remotely, which can be super usefull for pentesting!  
+With Wi-Fi you can upload and run your Ducky Script payloads remotely.  
 You just need to plug the device in, connect to its Wi-Fi network and you have full control over the target machine.  
 
 It also gives you one big advantage over other BadUSBs, you can test your scripts live! You don't need to copy them onto a micro-sd card or compile them. You can run them live over the webinterface, which makes its super easy for testing and improving your scripts.
 
 It also adds a lot of possibilites for different attacks.   
-You could make the target download executables from the Wi-Fi chip instead of the internet.
+You could make the target download executables from the Wi-Fi chip, instead of the internet.
 Or execute different attacks and send the results back to the Chip. Or open up a reverse shell on the ESP8266s Wi-Fi.  
 And so on... there are so much possibilities!
 
@@ -62,7 +61,7 @@ I don't take any responsibility for what you do with this project.
 ## Installation
 
 ### Short version:
-Upload the `arduino_wifi_duck` sketch to your ATmega32u4 and upload the `esp8266_wifi_duck` to your ESP8266.  
+Upload the `arduino_wifi_duck` sketch to your ATmega32u4 and upload the `esp8266_wifi_duck` sketch to your ESP8266.  
 Then connect the RX (Arduino) to TX (ESP8266) and TX (Arduino) to RX (ESP8266).
 
 ---
@@ -71,7 +70,7 @@ Then connect the RX (Arduino) to TX (ESP8266) and TX (Arduino) to RX (ESP8266).
 
 What you will need:
 - **ESP8266 Wi-Fi chip**  
-  I recommend using an ESP-12. It's widly used, cheap and has 4MB of flash memory
+  I recommend using an ESP-12. It's widely used, cheap and has 4MB of flash memory
 - **ATmega32u4**  
   I recommend using some kind of Arduino board. The Arduino Micro and Arduino Leonardo use an ATmega32u4 for example. You could also get a Arduino Pro Micro or other cheap Arduino clones which use the ATmega32u4. I will use a CJMCU-Beetle ATmeaga32u4.
 - **(a 3.3V regulator)**  
