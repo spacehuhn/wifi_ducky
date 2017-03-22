@@ -72,15 +72,26 @@ What you will need:
 - **ESP8266 Wi-Fi chip**  
   I recommend using an ESP-12. It's widely used, cheap and has 4MB of flash memory
 - **ATmega32u4**  
-  I recommend using some kind of Arduino board. The Arduino Micro and Arduino Leonardo use an ATmega32u4 for example. You could also get a Arduino Pro Micro or other cheap Arduino clones which use the ATmega32u4. I will use a CJMCU-Beetle ATmeaga32u4.
+  I recommend using some kind of Arduino board. The Arduino Micro and Arduino Leonardo use an ATmega32u4 for example. You could also get a Arduino Pro Micro or other cheap Arduino clones which use the ATmega32u4. I will use an [ATmega32u4 CJMCU Beetle](https://www.google.de/search?q=Cjmcu-beetle&tbm=isch).
 - **(a 3.3V regulator)**  
   I put that in brackets because you will only need this if your ATMega32u4 board doesn't provides 3.3V. The ESP8266 only works with 3.3V, so depending on your board you may need a regulator to get 3.3V out of the 5V.
+- **USB to serial adapter**
+  If you don't use a USB dev board like a NodeMCU, you will need a serial connection to upload the code to the ESP8266.
 - **Some skill, knowledge and common sense on this topic**  
   That's probably the most important part here. **This project is not noob friendly!** If you are a beginner, please start with other projects and get some knowledge about how Arduino and its code works, how to handle errors and how to work with the ESP8266. **I can't cover every little detail here. Please respect that.** Depending on your hardware choices you may need to add or change a bit of the Arduino code.  
 
 ### ESP8266
 
-[coming soon]
+First you will need to flash your ESP8266.  
+I included a .bin file for an ESP-12 in the `esp8266_wifi_duck` folder. You can upload this with the [esptool](https://github.com/espressif/esptool) or the [nodemcu-flasher](https://github.com/nodemcu/nodemcu-flasher).
+
+Open the `esp8266_wifi_duck` sketch with [Arduino](https://www.arduino.cc/en/Main/Software).
+You need to install the following Librarys:
+- [the latest ESP8266 SDK](https://github.com/esp8266/Arduino)
+- [ESPAsyncWebServer](https://github.com/me-no-dev/ESPAsyncWebServer)
+- [ESPAsyncTCP](https://github.com/me-no-dev/ESPAsyncTCP)
+
+**Note:** You will only need to flash it once, every new update can then be done over the webinterface.
 
 ### Arduino ATmega32u4
 
