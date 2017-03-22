@@ -35,7 +35,7 @@ Although the ESP8266 is awesome, it doesn't have native USB, which means it can'
 ([cnlohr](https://github.com/cnlohr) made a cool project on this and added a USB stack himself: https://github.com/cnlohr/espusb. The problem with that is that it isn't compatible with the current SDK version, also I wanted to use Arduino to make it more user friendly.)  
 
 Here comes the ATmega32u4 into play!  
-It can act as keyboard and thanks to [Seytonic](http://youtube.com/seytonic) run Ducky Script [link](https://github.com/Seytonic/Duckduino-microSD).  
+It can act as keyboard and thanks to [Seytonic](http://youtube.com/seytonic) run Ducky Script ([link](https://github.com/Seytonic/Duckduino-microSD)).  
 So what I did is connecting the ATmega to the ESP8266 via serial.
 
 The ESP will open up a Wi-Fi access point and host a webinterface from what you can upload and manage your scripts.  
@@ -70,31 +70,36 @@ Then connect the RX (Arduino) to TX (ESP8266) and TX (Arduino) to RX (ESP8266).
 ### Preparation
 
 What you will need:
-- **an ESP8266 Wi-Fi chip**  
-  I recommend using an ESP-12, they have 4MB flash and are cheap.
-- **an ATmega32u4**  
-  I recommend using some kind of microcontroller dev board. The Arduino Micro and Arduino Leonardo use an ATmega32u4 for example. You could also get a Arduino Pro Micro or other cheap Arduino clones which use the ATmega32u4. I will use a CJMCU-Beetle ATmeaga32u4.
+- **ESP8266 Wi-Fi chip**  
+  I recommend using an ESP-12. It's widly used, cheap and has 4MB of flash memory
+- **ATmega32u4**  
+  I recommend using some kind of Arduino board. The Arduino Micro and Arduino Leonardo use an ATmega32u4 for example. You could also get a Arduino Pro Micro or other cheap Arduino clones which use the ATmega32u4. I will use a CJMCU-Beetle ATmeaga32u4.
 - **(a 3.3V regulator)**  
-  I put that in brackets because you will only need this if your ATMega32u4 board only provides 5V. The ESP8266 only works with 3.3V, so depending on your board you may need a regulator to get 3.3V out of the 5V.
+  I put that in brackets because you will only need this if your ATMega32u4 board doesn't provides 3.3V. The ESP8266 only works with 3.3V, so depending on your board you may need a regulator to get 3.3V out of the 5V.
 - **Some skill, knowledge and common sense on this topic**  
   That's probably the most important part here. **This project is not noob friendly!** If you are a beginner, please start with other projects and get some knowledge about how Arduino and its code works, how to handle errors and how to work with the ESP8266. **I can't cover every little detail here. Please respect that.** Depending on your hardware choices you may need to add or change a bit of the Arduino code.  
 
 ### ESP8266
 
+[coming soon]
+
 ### Arduino ATmega32u4
+
+[coming soon]
 
 ### Wire everything up
 
+[coming soon]
 
 ## Improvements
 
 My wishlist:
-- add support for digispark (ATtiny85) as alternative for the ATmega32u4
-- change settings within the webinterface
+- add support for Digispark (ATtiny85) as alternative for the ATmega32u4
+- change settings within the webinterface (Wi-Fi SSID, password etc.)
 - full support of all Ducky Script commands (REPLAY is missing)
 - auto execute scripts
 - add mouse
-- control over the internet (login to Wi-Fi to connect to a socket)
+- control over the internet
 
 ## License
 
@@ -112,6 +117,3 @@ Seytonic: http://youtube.com/seytonic
 Arduino Ducky Script interpreter: https://github.com/Seytonic/Duckduino-microSD
 
 Cnlohrs ESP8266 USB Software Driver: https://github.com/cnlohr/espusb
-
-
-
