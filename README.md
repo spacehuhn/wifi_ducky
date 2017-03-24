@@ -1,7 +1,7 @@
 # Wi-Fi Ducky
 Upload, save and run keystroke injections remotely with an ESP8266 + ATmega32u4
 
-![image of my DIY Wi-Fi Duck](https://raw.githubusercontent.com/spacehuhn/wifi_ducky/master/images/my_wifi_duck.jpg?token=ADphfGrzgzA5cfC7gpnoFiod6GLQ8agBks5Y3jNSwA%3D%3D)
+![image of my DIY Wi-Fi Duck](https://raw.githubusercontent.com/spacehuhn/wifi_ducky/master/images/my_wifi_duck.jpg)
 
 ## Contents
 - [Introduction](#introduction)
@@ -86,7 +86,7 @@ So make your hardware choices!
 Also I wouldn't go straight forward and solder everything together. Test it beforehand, otherwise debugging can be hard!
 
 **For an easy start, better debugging, further development or if you just wanna test this project, I recommend using a Nodemcu + an Arduino Leonardo:**
-![nodemcu with a leonardo as wifi duck](https://raw.githubusercontent.com/spacehuhn/wifi_ducky/master/images/leonardo_duck_1.jpg?token=ADphfDSfckXAOk0YT9_A8DZ2RSEUjSxFks5Y3i6qwA%3D%3D)
+![nodemcu with a leonardo as wifi duck](https://raw.githubusercontent.com/spacehuhn/wifi_ducky/master/images/leonardo_duck_1.jpg)
 This is easy to setup, you don't need any soldering skills and you can still use both the NodeMCU and the Arduino for other cool projects.
 
 
@@ -154,7 +154,7 @@ Go to `192.168.4.1/update` and upload the new .bin file.
 Plug your Wi-Fi Ducky in and connect to the new Wi-Fi network `WiFi Duck`. The password is `quack`.  
 Open your browser and go to `192.168.4.1`. 
 
-![screenshot of the webinterface](https://raw.githubusercontent.com/spacehuhn/wifi_ducky/master/images/wifiduck_screenshot_1.jpg?token=ADphfIc9d07alQXhfJzFk3ZwxhsyUKHLks5Y3itCwA%3D%3D)
+![screenshot of the webinterface](https://raw.githubusercontent.com/spacehuhn/wifi_ducky/master/images/wifiduck_screenshot_1.jpg)
 
 There you can now upload, view, delete and run new Ducky Scripts.
 The little textarea at the bottom is for running your Ducky commands live (max. 600 chars).  
