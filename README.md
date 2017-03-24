@@ -14,11 +14,11 @@ Upload, save and run keystroke injections remotely with an ESP8266 + ATmega32u4
   - [ESP8266](#esp8266)
   - [Arduino ATmega32u4](#arduino-atmega32u4)
   - [Wire everything up](#wire-everything-up)
-  - [Update ESP8266 over the webinterface](#update-esp8266-over-the-webinterface)
+  - [Update ESP8266 over the Webinterface](#update-esp8266-over-the-webinterface)
 - [How to use it](#how-to-use-it)
 - [Improvements](#improvements)
 - [License](#license)
-- [Sources and additional links](#sources-and-additional-links)
+- [Sources and additional Links](#sources-and-additional-links)
 
 ## Introduction ##
 
@@ -43,7 +43,7 @@ So what I did is connecting the ATmega to the ESP8266 via serial.
 The ESP will open up a Wi-Fi access point and host a webinterface from what you can upload and manage your scripts.  
 When you hit run, it will send the script to the ATmega, which then will execute it on the target machine.  
 
-### The benefits of adding Wi-Fi ###
+### The benefits of adding Wi-Fi
 
 **But why add Wi-Fi** ...you might ask.  
 With Wi-Fi you can upload and run your Ducky Script payloads remotely.  
@@ -87,7 +87,7 @@ Also I wouldn't go straight forward and solder everything together. Test it befo
 
 **For an easy start, better debugging, further development or if you just wanna test this project, I recommend using a Nodemcu + an Arduino Leonardo:**
 ![nodemcu with a leonardo as wifi duck](https://raw.githubusercontent.com/spacehuhn/wifi_ducky/master/images/leonardo_duck_1.jpg?token=ADphfDSfckXAOk0YT9_A8DZ2RSEUjSxFks5Y3i6qwA%3D%3D)
-This is easy to setup, you don't need any soldering skills and you can stille use both the NodeMCU and the Arduino for other cool projects.
+This is easy to setup, you don't need any soldering skills and you can still use both the NodeMCU and the Arduino for other cool projects.
 
 
 But now let's get started!  
@@ -104,7 +104,7 @@ If don't use a USB dev board and don't know how to flash your plain ESP8266, I r
 You could also use your Arduino to flash it: https://gist.github.com/spacehuhn/b2b7d897550bc07b26da8464fa7f4b36
 (The connections are the same for this project, the only difference is that you need to set GPIO-0 to LOW to enabling a firmware update).
 
-**Flash the .bin file**  
+**Flash the .bin File**  
 I included a .bin file for an ESP-12 in the `esp8266_wifi_duck` folder. You can upload this with the [esptool](https://github.com/espressif/esptool) or the [nodemcu-flasher](https://github.com/nodemcu/nodemcu-flasher).
 
 **Upload using Arduino**  
@@ -143,7 +143,7 @@ If you use a plain ESP-12 like me, you also have to set the enable pin and to HI
 | CH_PD (EN)   | HIGH (3.3V)|
 
 
-### Update ESP8266 over the webinterface
+### Update ESP8266 over the Webinterface
 
 Once you flashed the software, you can update it over the webinterface.  
 Go to `192.168.4.1/update` and upload the new .bin file.  
@@ -180,7 +180,7 @@ My wishlist:
 
 This project is licensed under the MIT License - see the [license file](LICENSE) file for details
 
-## Sources and additional links
+## Sources and additional Links
 
 The USB Rubber Ducky: https://hakshop.com/products/usb-rubber-ducky-deluxe
 
