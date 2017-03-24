@@ -101,13 +101,16 @@ You can either flash the bin file directly or compile it yourself using Arduino.
 
 If don't use a USB dev board and don't know how to flash your plain ESP8266, I recommend you to have a look at this instructable: http://www.instructables.com/id/Getting-Started-with-the-ESP8266-ESP-12/?ALLSTEPS
 
+You could also use your Arduino to flash it: https://gist.github.com/spacehuhn/b2b7d897550bc07b26da8464fa7f4b36
+(The connections are the same for this project, the only difference is that you need to set GPIO-0 to LOW to enabling a firmware update).
+
 **Flash the .bin file**  
 I included a .bin file for an ESP-12 in the `esp8266_wifi_duck` folder. You can upload this with the [esptool](https://github.com/espressif/esptool) or the [nodemcu-flasher](https://github.com/nodemcu/nodemcu-flasher).
 
 **Upload using Arduino**  
 Open the `esp8266_wifi_duck` sketch with [Arduino](https://www.arduino.cc/en/Main/Software).
 You need to install the following Librarys:
-- [the **latest** ESP8266 SDK](https://github.com/esp8266/Arduino)
+- [the latest ESP8266 SDK](https://github.com/esp8266/Arduino)
 - [ESPAsyncWebServer](https://github.com/me-no-dev/ESPAsyncWebServer)
 - [ESPAsyncTCP](https://github.com/me-no-dev/ESPAsyncTCP)
 
