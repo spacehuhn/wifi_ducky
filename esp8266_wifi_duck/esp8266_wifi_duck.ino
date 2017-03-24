@@ -9,6 +9,11 @@
 
 #define BAUD_RATE 115200
 
+/* ============= CHANGE WIFI CREDENTIALS ============= */
+const char *ssid = "WiFi Duck";
+const char *password = "quackquack"; //min 8 chars
+/* ============= ======================= ============= */
+
 AsyncWebServer server(80);
 FSInfo fs_info;
 
@@ -22,11 +27,6 @@ extern String formatBytes(size_t bytes);
 bool runLine = false;
 bool runScript = false;
 File script;
-
-/* ============= CHANGE WIFI CREDENTIALS ============= */
-const char* ssid = "WiFi Duck";
-const char* password = "quack";
-/* ============= ======================= ============= */
 
 bool shouldReboot = false;
 
@@ -70,20 +70,18 @@ void sendToIndex(AsyncWebServerRequest *request){
 }
 
 void setup() {
-
-  ESP.eraseConfig();
-
-  EEPROM.begin(4096);
   
-  WiFi.mode(WIFI_STA);
-  WiFi.softAP(ssid,password);
-
   Serial.begin(BAUD_RATE);
   delay(2000);
-  //Serial.println();
-
+  Serial.println();
+  
+  //Serial.println(WiFi.SSID());
+  WiFi.mode(WIFI_STA);
+  WiFi.softAP(ssid,password);
+  
+  EEPROM.begin(4096);
   SPIFFS.begin();
-
+  
   MDNS.addService("http","tcp",80);
 
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
@@ -205,7 +203,7 @@ void setup() {
 
   server.begin();
   
-  //Serial.println("started");
+  Serial.println("started");
 }
 
 void sendBuffer(){

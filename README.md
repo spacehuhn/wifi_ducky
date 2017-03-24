@@ -151,7 +151,7 @@ Go to `192.168.4.1/update` and upload the new .bin file.
 
 ## How to use it
 
-Plug your Wi-Fi Ducky in and connect to the new Wi-Fi network `WiFi Duck`. The password is `quack`.  
+Plug your Wi-Fi Ducky in and connect to the new Wi-Fi network `WiFi Duck`. The password is `quackquack`.  
 Open your browser and go to `192.168.4.1`. 
 
 ![screenshot of the webinterface](https://raw.githubusercontent.com/spacehuhn/wifi_ducky/master/images/wifiduck_screenshot_1.jpg)
