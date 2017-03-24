@@ -13,6 +13,7 @@ AsyncWebServer server(80);
 FSInfo fs_info;
 
 extern const uint8_t data_indexHTML[] PROGMEM;
+extern const uint8_t data_updateHTML[] PROGMEM;
 extern const uint8_t data_error404[] PROGMEM;
 extern const uint8_t data_styleCSS[] PROGMEM;
 extern const uint8_t data_functionsJS[] PROGMEM;
@@ -21,6 +22,11 @@ extern String formatBytes(size_t bytes);
 bool runLine = false;
 bool runScript = false;
 File script;
+
+/* ============= CHANGE WIFI CREDENTIALS ============= */
+const char* ssid = "WiFi Duck";
+const char* password = "quack";
+/* ============= ======================= ============= */
 
 bool shouldReboot = false;
 
@@ -65,10 +71,12 @@ void sendToIndex(AsyncWebServerRequest *request){
 
 void setup() {
 
+  ESP.eraseConfig();
+
   EEPROM.begin(4096);
   
   WiFi.mode(WIFI_STA);
-  WiFi.softAP("pwned","deauther");
+  WiFi.softAP(ssid,password);
 
   Serial.begin(BAUD_RATE);
   delay(2000);
@@ -164,7 +172,8 @@ void setup() {
 
   // Simple Firmware Update Form
   server.on("/update", HTTP_GET, [](AsyncWebServerRequest *request){
-    request->send(200, "text/html", "<form method='POST' action='/update' enctype='multipart/form-data'><input type='file' name='update'><input type='submit' value='Update'></form>");
+    AsyncWebServerResponse *response = request->beginResponse_P(200, "text/html", data_updateHTML, sizeof(data_updateHTML));
+    request->send(response);
   });
   server.on("/update", HTTP_POST, [](AsyncWebServerRequest *request){
     shouldReboot = !Update.hasError();

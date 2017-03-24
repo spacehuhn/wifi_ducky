@@ -2,8 +2,6 @@
 #define BAUD_RATE 115200
 #define ExternSerial Serial1
 
-#define ENABLE_PIN 13
-
 String bufferStr = "";
 
 void Line(String _line)
@@ -81,11 +79,6 @@ void Press(String b)
 void setup() {
   Serial.begin(BAUD_RATE);
   ExternSerial.begin(BAUD_RATE);
-
-  //enable ESP8266
-  pinMode(ENABLE_PIN, OUTPUT);
-  delay(1000);
-  digitalWrite(ENABLE_PIN,HIGH);
 
   Keyboard.begin();
 }
