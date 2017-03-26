@@ -105,7 +105,8 @@ You could also use your Arduino to flash it: https://gist.github.com/spacehuhn/b
 (The connections are the same for this project, the only difference is that you need to set GPIO-0 to LOW to enabling a firmware update).
 
 **Flash the .bin File**  
-I included a .bin file for an ESP-12 in the `esp8266_wifi_duck` folder. You can upload this with the [esptool](https://github.com/espressif/esptool) or the [nodemcu-flasher](https://github.com/nodemcu/nodemcu-flasher).
+Go to [releases](https://github.com/spacehuhn/wifi_ducky/releases) and download the right bin file for your ESP8266.  
+You can flash it with the [esptool](https://github.com/espressif/esptool) or the [nodemcu-flasher](https://github.com/nodemcu/nodemcu-flasher).
 
 **Upload using Arduino**  
 Open the `esp8266_wifi_duck` sketch with [Arduino](https://www.arduino.cc/en/Main/Software).
