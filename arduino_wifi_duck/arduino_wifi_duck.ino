@@ -37,6 +37,15 @@ void Line(String _line)
   else if(_line.substring(0,firstSpace) == "REM"){
     //nothing :/
   }
+  else if(_line.substring(0,firstSpace) == "REPLAY")
+  {
+    int replaynum = _line.substring(firstSpace + 1).toInt();
+    while(replaynum)
+    {
+      Type(last);
+      --replaynum;
+    }
+  }
   else{
       String remain = _line;
 
