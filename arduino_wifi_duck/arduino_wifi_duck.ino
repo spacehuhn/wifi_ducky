@@ -3,6 +3,7 @@
 #define ExternSerial Serial1
 
 String bufferStr = "";
+String last = "";
 
 void Line(String _line)
 {
@@ -17,6 +18,15 @@ void Line(String _line)
   }
   else if(_line.substring(0,firstSpace) == "REM"){
     //nothing :/
+  }
+  else if(_line.substring(0,firstSpace) == "REPLAY")
+  {
+    int replaynum = _line.substring(firstSpace + 1).toInt();
+    while(replaynum)
+    {
+      Line(last);
+      --replaynum;
+    }
   }
   else{
       String remain = _line;
@@ -104,6 +114,7 @@ void loop() {
       } else{
         Serial.println("run: '"+bufferStr.substring(0, latest_return)+"'");
         Line(bufferStr.substring(0, latest_return));
+        last=bufferStr.substring(0, latest_return);
         bufferStr = bufferStr.substring(latest_return + 1);
       }
     }
