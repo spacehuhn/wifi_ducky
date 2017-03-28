@@ -3,7 +3,26 @@
 #define ExternSerial Serial1
 
 String bufferStr = "";
-
+String last = "";
+void Type(String _command)
+{
+  _command.replace("\r","\n");
+  _command.replace("\n\n","\n");
+  while(_command.length() > 0)
+  {
+    int latest_return = _command.indexOf("\n");
+    if(latest_return == -1){
+      Serial.println("run: "+_command);
+      Line(_command);
+      _command = "";
+    } else{
+      Serial.println("run: '"+_command.substring(0, latest_return)+"'");
+      Line(_command.substring(0, latest_return));
+      bufferStr = _command.substring(latest_return + 1);
+    }
+  }
+  _command = "";
+}
 void Line(String _line)
 {
   int firstSpace = _line.indexOf(" ");
@@ -17,6 +36,15 @@ void Line(String _line)
   }
   else if(_line.substring(0,firstSpace) == "REM"){
     //nothing :/
+  }
+  else if(_line.substring(0,firstSpace) == "REPLAY")
+  {
+    int replaynum = _line.substring(firstSpace + 1).toInt();
+    while(replaynum)
+    {
+      Type(last);
+      --replaynum;
+    }
   }
   else{
       String remain = _line;
@@ -85,32 +113,17 @@ void setup() {
 
 void loop() {
   
-  if(ExternSerial.available() > 0) {
+  if(ExternSerial.available() > 0) 
+  {
     bufferStr = ExternSerial.readString();
     Serial.println(bufferStr);
+  }  
+  if(bufferStr.length() > 0)
+  {    
+    Type(bufferStr);    
+    last=bufferStr;    
+    bufferStr="";    
+    ExternSerial.write(0x99);   
   }
-  
-  if(bufferStr.length() > 0){
-    
-    bufferStr.replace("\r","\n");
-    bufferStr.replace("\n\n","\n");
-    
-    while(bufferStr.length() > 0){
-      int latest_return = bufferStr.indexOf("\n");
-      if(latest_return == -1){
-        Serial.println("run: "+bufferStr);
-        Line(bufferStr);
-        bufferStr = "";
-      } else{
-        Serial.println("run: '"+bufferStr.substring(0, latest_return)+"'");
-        Line(bufferStr.substring(0, latest_return));
-        bufferStr = bufferStr.substring(latest_return + 1);
-      }
-    }
-    
-    bufferStr = "";
-    ExternSerial.write(0x99);
-  }
-
 }
 
