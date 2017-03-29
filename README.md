@@ -81,7 +81,11 @@ What you will need:
   I put that in brackets because you will only need this if your ATMega32u4 board doesn't provide 3.3V. The ESP8266 only works with 3.3V, so depending on your board you may need a regulator to get 3.3V out of the 5V.  
 - **Some skill, knowledge and common sense on this topic**  
   That's probably the most important part here. **This project is not noob friendly!** If you are a beginner, please start with other projects and get some knowledge about how Arduino and its code works, how to handle errors and how to work with the ESP8266. **I can't cover every little detail here. Please respect that.** Depending on your hardware choices you may need to add or change a bit of the Arduino code.  
-  
+
+**UPDATE:**  
+You need to use a 3.3V Arduino or convert the TX pin of the Arduino to 3.3V, because the ESP8266 isn't 5V tolerant. It will still work but if you want to use it over a longer period of time it gets very unhealthy for the ESP8266 and it can get broken.    
+You can use this simple solution using 2 resitors. ![5V to 3.3V with resistors](https://i.stack.imgur.com/z5AQJ.png)
+
 So make your hardware choices!  
 Also I wouldn't go straight forward and solder everything together. Test it beforehand, otherwise debugging can be hard!
 
