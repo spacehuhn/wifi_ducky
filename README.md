@@ -172,7 +172,7 @@ Happy hacking :)
 My wishlist:
 - add support for Digispark (ATtiny85) as alternative for the ATmega32u4 Arduino
 - change settings within the webinterface (Wi-Fi SSID, password etc.)
-- ~~full support of all Ducky Script commands (REPLAY is missing)~~
+- full support of all Ducky Script commands (DEFAULTDELAY is missing)
 - auto execute scripts
 - add mouse
 - control over the internet
