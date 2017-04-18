@@ -158,7 +158,6 @@ Open your browser and go to `192.168.4.1`.
 ![screenshot of the webinterface](https://raw.githubusercontent.com/spacehuhn/wifi_ducky/master/images/wifiduck_screenshot_1.jpg)
 
 There you can now upload, view, delete and run new Ducky Scripts.
-The little textarea at the bottom is for running your Ducky commands live (max. 600 chars).  
 
 **PLEASE NOTE that the max length per row for a script is 600 chars.**
 
