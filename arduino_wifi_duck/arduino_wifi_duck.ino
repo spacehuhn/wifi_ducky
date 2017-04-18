@@ -1,5 +1,5 @@
 #include <Keyboard.h>
-#define BAUD_RATE 9600
+#define BAUD_RATE 57200
 
 #define ExternSerial Serial1
 
