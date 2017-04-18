@@ -1,9 +1,12 @@
 #include <Keyboard.h>
-#define BAUD_RATE 115200
+#define BAUD_RATE 9600
+
 #define ExternSerial Serial1
 
 String bufferStr = "";
 String last = "";
+
+int defaultDelay = 0;
 
 void Line(String _line)
 {
@@ -16,19 +19,16 @@ void Line(String _line)
     int delaytime = _line.substring(firstSpace + 1).toInt();
     delay(delaytime);
   }
-  else if(_line.substring(0,firstSpace) == "REM"){
-    //nothing :/
-  }
-  else if(_line.substring(0,firstSpace) == "REPLAY")
-  {
+  else if(_line.substring(0,firstSpace) == "DEFAULTDELAY") defaultDelay = _line.substring(firstSpace + 1).toInt();
+  else if(_line.substring(0,firstSpace) == "REM"){} //nothing :/
+  else if(_line.substring(0,firstSpace) == "REPLAY") {
     int replaynum = _line.substring(firstSpace + 1).toInt();
     while(replaynum)
     {
       Line(last);
       --replaynum;
     }
-  }
-  else{
+  } else{
       String remain = _line;
 
       while(remain.length() > 0){
@@ -46,11 +46,11 @@ void Line(String _line)
   }
 
   Keyboard.releaseAll();
+  delay(defaultDelay);
 }
 
 
-void Press(String b)
-{
+void Press(String b){
   if(b.length() == 1) Keyboard.press(char(b[0]));
   else if (b.equals("ENTER")) Keyboard.press(KEY_RETURN);
   else if (b.equals("CTRL")) Keyboard.press(KEY_LEFT_CTRL);
@@ -87,16 +87,19 @@ void Press(String b)
 }
 
 void setup() {
+  
   Serial.begin(BAUD_RATE);
   ExternSerial.begin(BAUD_RATE);
+
+  pinMode(13,OUTPUT);
+  digitalWrite(13,HIGH);
 
   Keyboard.begin();
 }
 
 void loop() {
-  
-  if(ExternSerial.available() > 0) {
-    bufferStr = ExternSerial.readString();
+  if(ExternSerial.available()) {
+    bufferStr = ExternSerial.readStringUntil("END");
     Serial.println(bufferStr);
   }
   
@@ -121,7 +124,7 @@ void loop() {
     
     bufferStr = "";
     ExternSerial.write(0x99);
+    Serial.println("done");
   }
-
 }
 
