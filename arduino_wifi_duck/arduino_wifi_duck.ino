@@ -4,17 +4,23 @@
 
 String bufferStr = "";
 String last = "";
+int default=-1;
 
 void Line(String _line)
 {
   int firstSpace = _line.indexOf(" ");
-  if(firstSpace == -1) Press(_line);
+  if(firstSpace == -1){
+    Press(_line);
+    if(default>-1) delay(default);
+  }
   else if(_line.substring(0,firstSpace) == "STRING"){
     for(int i=firstSpace+1;i<_line.length();i++) Keyboard.write(_line[i]);
+    if(default>-1) delay(default);
   }
   else if(_line.substring(0,firstSpace) == "DELAY"){
     int delaytime = _line.substring(firstSpace + 1).toInt();
     delay(delaytime);
+    if(default>-1) delay(default);
   }
   else if(_line.substring(0,firstSpace) == "REM"){
     //nothing :/
@@ -27,6 +33,10 @@ void Line(String _line)
       Line(last);
       --replaynum;
     }
+    if(default>-1) delay(default);
+  }
+  else if(_line.substring(0,firstSpace) == "DEFAULT_DELAY" || _line.substring(0,firstSpace) == "DEFAULTDELAY"){
+    default = _line.substring(firstSpace + 1).toInt();
   }
   else{
       String remain = _line;
@@ -43,6 +53,7 @@ void Line(String _line)
         }
         delay(5);
       }
+    if(default>-1) delay(default);
   }
 
   Keyboard.releaseAll();
