@@ -66,6 +66,7 @@ void Press(String b){
   else if (b.equals("PAGEDOWN")) Keyboard.press(KEY_PAGE_DOWN);
   else if (b.equals("HOME")) Keyboard.press(KEY_HOME);
   else if (b.equals("ESC")) Keyboard.press(KEY_ESC);
+  else if (b.equals("BACKSPACE")) Keyboard.press(KEY_BACKSPACE);
   else if (b.equals("INSERT")) Keyboard.press(KEY_INSERT);
   else if (b.equals("TAB")) Keyboard.press(KEY_TAB);
   else if (b.equals("END")) Keyboard.press(KEY_END);
