@@ -3,7 +3,10 @@ Upload, save and run keystroke injections remotely with an ESP8266 + ATmega32u4
 
 ![image of my DIY Wi-Fi Duck](https://raw.githubusercontent.com/spacehuhn/wifi_ducky/master/images/my_wifi_duck.jpg)
 
-[![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RCHANSVSX9M8C)
+[**Support me and my projects on Patreon!**  
+<img width="450" alt="Support me on Patreon" src="https://raw.githubusercontent.com/spacehuhn/wifi_ducky/master/images/patreon.png">](https://www.patreon.com/spacehuhn)  
+
+
 
 ## Contents
 - [Introduction](#introduction)
