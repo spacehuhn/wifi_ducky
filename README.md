@@ -30,7 +30,7 @@ Upload, save and run keystroke injections remotely with an ESP8266 + ATmega32u4
 
 It's a Wi-Fi controlled BadUSB device to remotely execute Ducky Scripts. 
 
-Using a USB device which act as a keyboard to inject keystrokes is well kown these days. 
+Using a USB device which act as a keyboard to inject keystrokes is well known these days. 
 The [USB Rubber Ducky](https://hakshop.com/products/usb-rubber-ducky-deluxe) by [Hak5](https://www.hak5.org/) is THE hacker gadget for this kind of attack. It introduced a simple script language called *Ducky Script*, which this project uses too.
 
 ### How it works
@@ -44,7 +44,7 @@ Here comes the ATmega32u4 into play!
 It can act as keyboard and thanks to [Seytonic](http://youtube.com/seytonic) run Ducky Script ([link](https://github.com/Seytonic/Duckduino-microSD)).  
 So what I did is connecting the ATmega to the ESP8266 via serial.
 
-The ESP will open up a Wi-Fi access point and host a webinterface from what you can upload and manage your scripts.  
+The ESP will open up a Wi-Fi access point and host a web interface from what you can upload and manage your scripts.  
 When you hit run, it will send the script to the ATmega, which then will execute it on the target machine.  
 
 ### The benefits of adding Wi-Fi
@@ -53,9 +53,9 @@ When you hit run, it will send the script to the ATmega, which then will execute
 With Wi-Fi you can upload and run your Ducky Script payloads remotely.  
 You just need to plug the device in, connect to its Wi-Fi network and you have full control over the target machine.  
 
-It also gives you one big advantage over other BadUSBs, you can test your scripts live! You don't need to copy them onto a micro-sd card or compile them. You can run them live over the webinterface, which makes its super easy for testing and improving your scripts.
+It also gives you one big advantage over other BadUSBs, you can test your scripts live! You don't need to copy them onto a micro-sd card or compile them. You can run them live over the web interface, which makes its super easy for testing and improving your scripts.
 
-It also adds a lot of possibilites for different attacks.   
+It also adds a lot of possibilities for different attacks.   
 You could make the target download executables from the Wi-Fi chip, instead of the internet.
 Or execute different attacks and send the results back to the Chip. Or open up a reverse shell on the ESP8266s Wi-Fi.  
 And so on... there are so much possibilities!
@@ -101,7 +101,7 @@ But now let's get started!
 First you will need to flash your ESP8266.  
 You can either flash the bin file directly or compile it yourself using Arduino.  
 
-**Note:** You will only need to flash it once, every new update can then be done over the webinterface.
+**Note:** You will only need to flash it once, every new update can then be done over the possibilities.
 
 If don't use a USB dev board and don't know how to flash your plain ESP8266, I recommend you to have a look at this instructable: http://www.instructables.com/id/Getting-Started-with-the-ESP8266-ESP-12/?ALLSTEPS
 
@@ -114,7 +114,7 @@ You can flash it with the [esptool](https://github.com/espressif/esptool) or the
 
 **Upload using Arduino**  
 Open the `esp8266_wifi_duck` sketch with [Arduino](https://www.arduino.cc/en/Main/Software).
-You need to install the following Librarys:
+You need to install the following libraries:
 - [the latest ESP8266 SDK](https://github.com/esp8266/Arduino)
 - [ESPAsyncWebServer](https://github.com/me-no-dev/ESPAsyncWebServer)
 - [ESPAsyncTCP](https://github.com/me-no-dev/ESPAsyncTCP)
@@ -148,9 +148,9 @@ If you use a plain ESP-12 like me, you also have to set the enable pin and to HI
 | CH_PD (EN)   | HIGH (3.3V)|
 
 
-### Update ESP8266 over the Webinterface
+### Update ESP8266 over the Web interface
 
-Once you flashed the software, you can update it over the webinterface.  
+Once you flashed the software, you can update it over the web interface.  
 Go to `192.168.4.1/update` and upload the new .bin file.  
 (In Arduino go to `Sketch`->`Export compiled Binary` to compile your own .bin file)  
 
@@ -174,7 +174,7 @@ Happy hacking :)
 
 My wishlist:
 - add support for Digispark (ATtiny85) as alternative for the ATmega32u4 Arduino
-- change settings within the webinterface (Wi-Fi SSID, password etc.)
+- change settings within the web interface (Wi-Fi SSID, password etc.)
 - full support of all Ducky Script commands (DEFAULTDELAY is missing)
 - auto execute scripts
 - add mouse
