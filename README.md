@@ -268,10 +268,11 @@ CZ_0-9 - Press numbers.
 My wishlist:
 - [ ] add support for Digispark (ATtiny85) as alternative for the ATmega32u4 Arduino
 - [ ] change settings within the web interface (Wi-Fi SSID, password etc.)
-- [ ] full support of all Ducky Script commands (DEFAULTDELAY is missing)
+- [ ] full support of all Ducky Script commands (are we missing any?)
 - [ ] auto execute scripts
 - [ ] control over the internet
 - [x] add mouse (by gloglas)
+- [x] implement DEFAULTDELAY (by gloglas)
 
 ## License
 
@@ -290,6 +291,6 @@ Arduino Ducky Script interpreter: https://github.com/Seytonic/Duckduino-microSD
 
 Jesse Vincent (os detection): https://github.com/keyboardio/FingerprintUSBHost
 
-Gloglas' improvements: https://github.com/gloglas/WifiDuckV2
+Gloglas' improvements: https://github.com/gloglas/WifiDuckV2, now merged into this repo
 
 Cnlohrs ESP8266 USB Software Driver: https://github.com/cnlohr/espusb

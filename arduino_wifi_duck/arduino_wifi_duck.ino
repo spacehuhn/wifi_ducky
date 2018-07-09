@@ -5,7 +5,7 @@
 
 #define ExternSerial Serial1
 
-// OS detection, mouse, and additional keys by Gloglas
+// OS detection, mouse, ascii, and additional keys by Gloglas
 
 String bufferStr = "";
 String last = "";
@@ -135,7 +135,7 @@ void Press(String b){
   else if (b.equals("NUM_7")) Keyboard.press(231);
   else if (b.equals("NUM_8")) Keyboard.press(232);
   else if (b.equals("NUM_9")) Keyboard.press(233);
-  else if (b.equals("CZ_0")) Keyboard.press(41);//////// Czech layout is different
+  else if (b.equals("CZ_0")) Keyboard.press(41);// Czech layout is different
   else if (b.equals("CZ_1")) Keyboard.press(33);
   else if (b.equals("CZ_2")) Keyboard.press(64);
   else if (b.equals("CZ_3")) Keyboard.press(35);
@@ -145,7 +145,7 @@ void Press(String b){
   else if (b.equals("CZ_7")) Keyboard.press(38);
   else if (b.equals("CZ_8")) Keyboard.press(42);
   else if (b.equals("CZ_9")) Keyboard.press(40);
-  else if (b.equals("ASTERIX") || b.equals("HVEZDICKA")) Keyboard.press(221);
+  else if (b.equals("ASTERISK")) Keyboard.press(221);
   else if (b.equals("MINUS")) Keyboard.press(222);
   else if (b.equals("PLUS")) Keyboard.press(223);
   else if (b.equals("SLASH")) Keyboard.press(220);
