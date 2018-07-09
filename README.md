@@ -123,7 +123,9 @@ Then compile and upload it to your ESP8266 (check if your settings are right).
 
 ### Arduino ATmega32u4
 
-Open the `arduino_wifi_duck` sketch in Arduino and upload it to your Arduino.  
+Open the `arduino_wifi_duck` sketch in Arduino IDE.
+You need to install the following libraries:
+- [FingerprintUSBHost](https://github.com/keyboardio/FingerprintUSBHost)
 
 ### Wire everything up
 
