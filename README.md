@@ -2,7 +2,7 @@
 Upload, save and run keystroke injections remotely with an ESP8266 + ATmega32u4
 
 ![image of my DIY Wi-Fi Duck](https://raw.githubusercontent.com/spacehuhn/wifi_ducky/master/images/my_wifi_duck.jpg)
- 
+
 **Support me and my projects on [Patreon!](https://www.patreon.com/spacehuhn)**  
 [<img width="200" alt="Support me on Patreon" src="https://raw.githubusercontent.com/spacehuhn/wifi_ducky/master/images/patreon.png">](https://www.patreon.com/spacehuhn)  
 
@@ -28,9 +28,9 @@ Upload, save and run keystroke injections remotely with an ESP8266 + ATmega32u4
 
 ### What it is
 
-It's a Wi-Fi controlled BadUSB device to remotely execute Ducky Scripts. 
+It's a Wi-Fi controlled BadUSB device to remotely execute Ducky Scripts.
 
-Using a USB device which act as a keyboard to inject keystrokes is well known these days. 
+Using a USB device which act as a keyboard to inject keystrokes is well known these days.
 The [USB Rubber Ducky](https://hakshop.com/products/usb-rubber-ducky-deluxe) by [Hak5](https://www.hak5.org/) is THE hacker gadget for this kind of attack. It introduced a simple script language called *Ducky Script*, which this project uses too.
 
 ### How it works
@@ -157,7 +157,7 @@ Go to `192.168.4.1/update` and upload the new .bin file.
 ## How to use it
 
 Plug your Wi-Fi Ducky in and connect to the new Wi-Fi network `WiFi Duck`. The password is `quackquack`.  
-Open your browser and go to `192.168.4.1`. 
+Open your browser and go to `192.168.4.1`.
 
 ![screenshot of the webinterface](https://raw.githubusercontent.com/spacehuhn/wifi_ducky/master/images/wifiduck_screenshot_1.jpg)
 
@@ -170,15 +170,108 @@ How to write Ducky Scripts: https://github.com/hak5darren/USB-Rubber-Ducky/wiki/
 
 Happy hacking :)
 
+
+## Additional Syntax
+
+### OS Detection
+OS - Dump fingerprint (Better to write it as first line)
+
+WINDOWS - Start code below if it is Windows machine.
+
+MACOS - Start code below if it is iOS machine.
+
+LINUX - Start code below if it is Linux machine.
+
+OSEND - End the os code
+
+#### Example
+```Duckyscript
+OS
+STRING I do not care now.
+
+WINDOWS
+STRING I am Windows machine.
+OSEND
+
+LINUX
+STRING I am Linux/Android/ChromeOS machine.
+OSEND
+
+STRING I do it anyway.
+
+MACOS
+STRING I am iOS machine.
+OSEND
+```
+
+### ASCII
+ASCII - write ASCII code
+```Duckyscript
+REM write 'a'
+ASCII 97
+```
+
+### MOUSE
+MOUSE X Y - Move mouse in both directions.
+
+MOUSEX X - Move mouse only in X-axis.
+
+MOUSEY Y - Move mouse only in Y-axis.
+
+SCROLL Y - Scroll.
+
+CLICK - Press MOUSE1.
+
+CLICK_RIGHT - Press MOUSE2.
+
+CLICK_MIDDLE - Press MOUSE3.
+
+MOUSE_CLICK_LEFT, CLICK_LEFT - aliases for all 3 buttons.
+
+PRESS - Hold MOUSE1.
+
+MOUSE_PRESS_LEFT, PRESS_LEFT - aliases for all 3 buttons.
+
+RELEASE - Release MOUSE1
+
+MOUSE_RELEASE_LEFT, RELEASE_LEFT - aliases for all 3 buttons.
+
+```Duckyscript
+MOUSE 2000 -400
+CLICK
+SCROLL 20
+PRESS
+MOVE -100 2500
+RELEASE_LEFT
+CLICK_RIGHT
+```
+### NUMPAD
+NUM_0-9 - Press numpad numbers.
+
+ASTERIX, MINUS, SLASH - Press symbols
+
+```Duckyscript
+SLASH
+SLASH
+SPACE
+NUM_2
+NUM_0
+NUM_1
+NUM_8
+```
+
+### Numbers for Czech layout.
+CZ_0-9 - Press numbers.
+
 ## Improvements
 
 My wishlist:
-- add support for Digispark (ATtiny85) as alternative for the ATmega32u4 Arduino
-- change settings within the web interface (Wi-Fi SSID, password etc.)
-- full support of all Ducky Script commands (DEFAULTDELAY is missing)
-- auto execute scripts
-- add mouse
-- control over the internet
+- [ ] add support for Digispark (ATtiny85) as alternative for the ATmega32u4 Arduino
+- [ ] change settings within the web interface (Wi-Fi SSID, password etc.)
+- [ ] full support of all Ducky Script commands (DEFAULTDELAY is missing)
+- [ ] auto execute scripts
+- [ ] control over the internet
+- [x] add mouse (by gloglas)
 
 ## License
 
@@ -194,5 +287,9 @@ Seytonic: http://youtube.com/seytonic
           https://github.com/seytonic
 
 Arduino Ducky Script interpreter: https://github.com/Seytonic/Duckduino-microSD
+
+Jesse Vincent (os detection): https://github.com/keyboardio/FingerprintUSBHost
+
+Gloglas' improvements: https://github.com/gloglas/WifiDuckV2
 
 Cnlohrs ESP8266 USB Software Driver: https://github.com/cnlohr/espusb
