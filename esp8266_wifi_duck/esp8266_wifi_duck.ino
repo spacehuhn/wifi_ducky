@@ -393,7 +393,8 @@ void loop() {
 
   if (Serial.available()) {
     uint8_t answer = Serial.read();
-    if (answer == 0x99) {
+    // 0x06 = acknowledge
+    if (answer == 0x06) {
       if (debug) Serial.println("done");
       runLine = true;
     } else {

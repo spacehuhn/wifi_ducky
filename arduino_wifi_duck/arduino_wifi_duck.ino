@@ -123,7 +123,8 @@ void loop() {
     }
 
     bufferStr = "";
-    ExternSerial.write(0x99);
+    // 0x06 = acknowledge
+    ExternSerial.write(0x06);
     Serial.println("done");
   }
 }
