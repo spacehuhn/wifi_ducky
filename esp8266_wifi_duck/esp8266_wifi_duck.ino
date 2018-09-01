@@ -387,7 +387,9 @@ void setup() {
 
 void sendBuffer() {
   if (debug) Serial.println("sendBuffer()");
+  Serial.write(0x02);  // 0x02 Start of text
   for (int i = 0; i < lc; i++) Serial.write((char)scriptLineBuffer[i]);
+  Serial.write(0x03);  // 0x03 End of text
   Serial.write(0x0D);  // Carriage return
   waitToSend = true;
   lc = 0;

@@ -102,16 +102,27 @@ void loop() {
   if (ExternSerial.available()) {
     // 0x0D = carriage return
     bufferStr = ExternSerial.readStringUntil(0x0D);
-    Serial.println(bufferStr);
+    bufferStr.trim();
+    // Serial.println("---bufferStr---");
+    // Serial.println(bufferStr);
+    // Serial.println("---------------");
   }
 
-  if (bufferStr.length() > 0) {
-    Serial.print("run:");
-    Serial.println(bufferStr);
-    Line(bufferStr);
+  int bufLen = bufferStr.length();
+  if (bufLen > 0) {
+    // 0x02/0x03 Start/end of text
+    if (bufferStr.charAt(0) == 0x02 && bufferStr.charAt(bufLen - 1) == 0x03) {
+      // Strip off verification chars
+      bufferStr = bufferStr.substring(1, bufLen - 1);
+      Serial.print("run: ");
+      Serial.println(bufferStr);
+      Line(bufferStr);
+      // Serial.println("line done");
+      ExternSerial.write(0x06); // acknowledge
+    } else {
+      // Serial.print("Ignoring non-Ducky line:");
+      Serial.println(bufferStr);
+    }
     bufferStr = "";
-    // 0x06 = acknowledge
-    ExternSerial.write(0x06);
-    Serial.println("done");
   }
 }
