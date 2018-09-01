@@ -9,7 +9,7 @@
 
 #include "Settings.h"
 
-#define BAUD_RATE 57200
+#define BAUD_RATE 57600
 #define bufferSize 600
 #define debug false
 
