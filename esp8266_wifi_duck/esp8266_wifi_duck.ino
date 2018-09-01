@@ -239,6 +239,8 @@ void setup() {
     while (dir.next()) {
       File entry = dir.openFile("r");
       String filename = String(entry.name()).substring(1);
+      // Skip displaying the temp file
+      if (filename == ".run-tmp.txt") continue;
       output += '{';
       output += "\"n\":\"" + filename + "\",";                  // name
       output += "\"s\":\"" + formatBytes(entry.size()) + "\"";  // size
@@ -268,7 +270,15 @@ void setup() {
       waitToSend = false;
       request->send(200, "text/plain", "true");
     } else if (request->hasArg("script")) {
-      Serial.println(request->arg("script"));
+      // create or truncate file
+      script = SPIFFS.open("/.run-tmp.txt", "w");
+      script.print(request->arg("script"));
+      script.close();
+      // re-open file
+      script = SPIFFS.open("/.run-tmp.txt", "r");
+      runScript = true;
+      runLine = true;
+      waitToSend = false;
       request->send(200, "text/plain", "true");
     } else {
       send404(request);
