@@ -8,51 +8,52 @@ String last = "";
 
 int defaultDelay = 0;
 
-void Line(String _line)
-{
+void Line(String _line) {
   int firstSpace = _line.indexOf(" ");
-  if(firstSpace == -1) Press(_line);
-  else if(_line.substring(0,firstSpace) == "STRING"){
-    for(int i=firstSpace+1;i<_line.length();i++) Keyboard.write(_line[i]);
-  }
-  else if(_line.substring(0,firstSpace) == "DELAY"){
+  if (firstSpace == -1) {
+    Press(_line);
+  } else if (_line.substring(0, firstSpace) == "STRING") {
+    for (int i = firstSpace + 1; i < _line.length(); i++)
+      Keyboard.write(_line[i]);
+  } else if (_line.substring(0, firstSpace) == "DELAY") {
     int delaytime = _line.substring(firstSpace + 1).toInt();
     delay(delaytime);
-  }
-  else if(_line.substring(0,firstSpace) == "DEFAULTDELAY") defaultDelay = _line.substring(firstSpace + 1).toInt();
-  else if(_line.substring(0,firstSpace) == "REM"){} //nothing :/
-  else if(_line.substring(0,firstSpace) == "REPLAY") {
+  } else if (_line.substring(0, firstSpace) == "DEFAULTDELAY") {
+    defaultDelay = _line.substring(firstSpace + 1).toInt();
+  } else if (_line.substring(0, firstSpace) == "REM") {
+    // nothing :/
+  } else if (_line.substring(0, firstSpace) == "REPLAY") {
     int replaynum = _line.substring(firstSpace + 1).toInt();
-    while(replaynum)
-    {
+    while (replaynum) {
       Line(last);
       --replaynum;
     }
-  } else{
-      String remain = _line;
+  } else {
+    String remain = _line;
 
-      while(remain.length() > 0){
-        int latest_space = remain.indexOf(" ");
-        if (latest_space == -1){
-          Press(remain);
-          remain = "";
-        }
-        else{
-          Press(remain.substring(0, latest_space));
-          remain = remain.substring(latest_space + 1);
-        }
-        delay(5);
+    while (remain.length() > 0) {
+      int latest_space = remain.indexOf(" ");
+      if (latest_space == -1) {
+        Press(remain);
+        remain = "";
+      } else {
+        Press(remain.substring(0, latest_space));
+        remain = remain.substring(latest_space + 1);
       }
+      delay(5);
+    }
   }
 
   Keyboard.releaseAll();
   delay(defaultDelay);
 }
 
-
-void Press(String b){
-  if(b.length() == 1) Keyboard.press(char(b[0]));
-  else if (b.equals("ENTER")) Keyboard.press(KEY_RETURN);
+void Press(String b) {
+  if (b.length() == 1) {
+    Keyboard.press(char(b[0]));
+    return;
+  }
+  if (b.equals("ENTER")) Keyboard.press(KEY_RETURN);
   else if (b.equals("CTRL")) Keyboard.press(KEY_LEFT_CTRL);
   else if (b.equals("SHIFT")) Keyboard.press(KEY_LEFT_SHIFT);
   else if (b.equals("ALT")) Keyboard.press(KEY_LEFT_ALT);
@@ -84,48 +85,45 @@ void Press(String b){
   else if (b.equals("F11")) Keyboard.press(KEY_F11);
   else if (b.equals("F12")) Keyboard.press(KEY_F12);
   else if (b.equals("SPACE")) Keyboard.press(' ');
-  //else Serial.println("not found :'"+b+"'("+String(b.length())+")");
+  // else Serial.println("not found :'"+b+"'("+String(b.length())+")");
 }
 
 void setup() {
-  
   Serial.begin(BAUD_RATE);
   ExternSerial.begin(BAUD_RATE);
 
-  pinMode(13,OUTPUT);
-  digitalWrite(13,HIGH);
+  pinMode(13, OUTPUT);
+  digitalWrite(13, HIGH);
 
   Keyboard.begin();
 }
 
 void loop() {
-  if(ExternSerial.available()) {
+  if (ExternSerial.available()) {
     bufferStr = ExternSerial.readStringUntil("END");
     Serial.println(bufferStr);
   }
-  
-  if(bufferStr.length() > 0){
-    
-    bufferStr.replace("\r","\n");
-    bufferStr.replace("\n\n","\n");
-    
-    while(bufferStr.length() > 0){
+
+  if (bufferStr.length() > 0) {
+    bufferStr.replace("\r", "\n");
+    bufferStr.replace("\n\n", "\n");
+
+    while (bufferStr.length() > 0) {
       int latest_return = bufferStr.indexOf("\n");
-      if(latest_return == -1){
-        Serial.println("run: "+bufferStr);
+      if (latest_return == -1) {
+        Serial.println("run: " + bufferStr);
         Line(bufferStr);
         bufferStr = "";
-      } else{
-        Serial.println("run: '"+bufferStr.substring(0, latest_return)+"'");
+      } else {
+        Serial.println("run: '" + bufferStr.substring(0, latest_return) + "'");
         Line(bufferStr.substring(0, latest_return));
-        last=bufferStr.substring(0, latest_return);
+        last = bufferStr.substring(0, latest_return);
         bufferStr = bufferStr.substring(latest_return + 1);
       }
     }
-    
+
     bufferStr = "";
     ExternSerial.write(0x99);
     Serial.println("done");
   }
 }
-
