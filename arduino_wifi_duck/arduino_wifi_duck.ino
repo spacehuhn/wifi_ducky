@@ -100,28 +100,15 @@ void setup() {
 
 void loop() {
   if (ExternSerial.available()) {
-    bufferStr = ExternSerial.readStringUntil("END");
+    // 0x0D = carriage return
+    bufferStr = ExternSerial.readStringUntil(0x0D);
     Serial.println(bufferStr);
   }
 
   if (bufferStr.length() > 0) {
-    bufferStr.replace("\r", "\n");
-    bufferStr.replace("\n\n", "\n");
-
-    while (bufferStr.length() > 0) {
-      int latest_return = bufferStr.indexOf("\n");
-      if (latest_return == -1) {
-        Serial.println("run: " + bufferStr);
-        Line(bufferStr);
-        bufferStr = "";
-      } else {
-        Serial.println("run: '" + bufferStr.substring(0, latest_return) + "'");
-        Line(bufferStr.substring(0, latest_return));
-        last = bufferStr.substring(0, latest_return);
-        bufferStr = bufferStr.substring(latest_return + 1);
-      }
-    }
-
+    Serial.print("run:");
+    Serial.println(bufferStr);
+    Line(bufferStr);
     bufferStr = "";
     // 0x06 = acknowledge
     ExternSerial.write(0x06);

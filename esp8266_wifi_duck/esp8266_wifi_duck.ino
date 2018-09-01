@@ -44,11 +44,11 @@ extern String formatBytes(size_t bytes);
 // Script stuff
 bool runLine = false;
 bool runScript = false;
+bool waitToSend = false;
 File script;
 
 uint8_t scriptBuffer[bufferSize];
 uint8_t scriptLineBuffer[bufferSize];
-int bc = 0;  // buffer counter
 int lc = 0;  // line buffer counter
 
 void handleUpload(AsyncWebServerRequest *request, String filename, size_t index,
@@ -111,6 +111,7 @@ void setup() {
     script = SPIFFS.open("/" + _name, "r");
     runScript = true;
     runLine = true;
+    waitToSend = false;
   }
 
   WiFi.mode(WIFI_STA);
@@ -264,6 +265,7 @@ void setup() {
       script = SPIFFS.open("/" + _name, "r");
       runScript = true;
       runLine = true;
+      waitToSend = false;
       request->send(200, "text/plain", "true");
     } else if (request->hasArg("script")) {
       Serial.println(request->arg("script"));
@@ -374,17 +376,10 @@ void setup() {
 }
 
 void sendBuffer() {
-  for (int i = 0; i < bc; i++) Serial.write((char)scriptBuffer[i]);
-  runLine = false;
-  bc = 0;
-}
-
-void addToBuffer() {
-  if (bc + lc > bufferSize) sendBuffer();
-  for (int i = 0; i < lc; i++) {
-    scriptBuffer[bc] = scriptLineBuffer[i];
-    bc++;
-  }
+  if (debug) Serial.println("sendBuffer()");
+  for (int i = 0; i < lc; i++) Serial.write((char)scriptLineBuffer[i]);
+  Serial.write(0x0D);  // Carriage return
+  waitToSend = true;
   lc = 0;
 }
 
@@ -395,8 +390,9 @@ void loop() {
     uint8_t answer = Serial.read();
     // 0x06 = acknowledge
     if (answer == 0x06) {
-      if (debug) Serial.println("done");
+      if (debug) Serial.println("got acknowledge from Arduino");
       runLine = true;
+      waitToSend = false;
     } else {
       String command = (char)answer + Serial.readStringUntil('\n');
       command.replace("\r", "");
@@ -407,17 +403,26 @@ void loop() {
     }
   }
 
-  if (runScript && runLine) {
+  // Each loop completes a single character of the file
+  if (runScript && !waitToSend) {
+    // The script file exists and is not .read() complete
     if (script.available()) {
+      // Serial.println("script.available");
+      // Grab a single character from the script
       uint8_t nextChar = script.read();
-      if (debug) Serial.write(nextChar);
-      scriptLineBuffer[lc] = nextChar;
-      lc++;
-      if (nextChar == 0x0D || lc == bufferSize) addToBuffer();
+      // if(debug) Serial.write(nextChar);
+      if (nextChar == 0x0D) {
+        if (debug) Serial.println("shipping... hit a carriage return");
+        sendBuffer();
+      } else {
+        scriptLineBuffer[lc] = nextChar;
+        lc++;
+      }
     } else {
-      addToBuffer();
-      if (bc > 0) sendBuffer();
+      // if (debug) Serial.println("!script.available");
+      if (lc > 0) sendBuffer();
       runScript = false;
+      waitToSend = true;
       script.close();
     }
   }
