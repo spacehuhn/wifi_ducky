@@ -1,4 +1,5 @@
 #include <Keyboard.h>
+#include <Mouse.h>
 #define BAUD_RATE 57600
 
 #define ExternSerial Serial1
@@ -52,6 +53,18 @@ void Line(String _line) {
       Line(last);
       --replaynum;
     }
+  } else if (command == "SCROLL") {
+    // Mouse scroll wheel
+    Mouse.move(0, 0, arg1.toInt());
+  } else if (command == "MOUSEX") {
+    // Mouse X motion
+    Mouse.move(arg1.toInt(), 0);
+  } else if (command == "MOUSEY") {
+    // Mouse Y motion
+    Mouse.move(0, arg1.toInt());
+  } else if (command == "MOUSE") {
+    // Mouse X,Y motion
+    Mouse.move(arg1.toInt(), arg2.toInt());
   } else {
     // Multi-key press (ex: CTRL ALT DEL)
     String remain = _line;
@@ -117,6 +130,16 @@ void Press(String b) {
     Keyboard.press(KEY_LEFT_SHIFT);
     Keyboard.press(KEY_F10);
   }
+  // Mouse support
+  else if (b.equals("CLICK") || b.equals("CLICK_LEFT")|| b.equals("MOUSE_CLICK_LEFT")|| b.equals("MOUSE_CLICK")) Mouse.click();
+  else if (b.equals("CLICK_RIGHT") || b.equals("MOUSE_CLICK_RIGHT")) Mouse.click(MOUSE_RIGHT);
+  else if (b.equals("CLICK_MIDDLE") || b.equals("MOUSE_CLICK_MIDDLE")) Mouse.click(MOUSE_MIDDLE);
+  else if (b.equals("PRESS") || b.equals("PRESS_LEFT") || b.equals("MOUSE_PRESS_LEFT")) Mouse.press();
+  else if (b.equals("PRESS_RIGHT") || b.equals("MOUSE_PRESS_RIGHT")) Mouse.press(MOUSE_RIGHT);
+  else if (b.equals("PRESS_MIDDLE") || b.equals("MOUSE_PRESS_MIDDLE")) Mouse.press(MOUSE_MIDDLE);
+  else if (b.equals("RELEASE") || b.equals("RELEASE_LEFT") || b.equals("MOUSE_RELEASE_LEFT") || b.equals("MOUSE_RELEASE")) Mouse.release();
+  else if (b.equals("RELEASE_RIGHT") || b.equals("MOUSE_RELEASE_RIGHT")) Mouse.release(MOUSE_RIGHT);
+  else if (b.equals("RELEASE_MIDDLE") || b.equals("MOUSE_RELEASE_MIDDLE")) Mouse.release(MOUSE_MIDDLE);
   // else Serial.println("not found :'"+b+"'("+String(b.length())+")");
 }
 
@@ -128,6 +151,7 @@ void setup() {
   digitalWrite(13, HIGH);
 
   Keyboard.begin();
+  Mouse.begin();
 }
 
 void loop() {
