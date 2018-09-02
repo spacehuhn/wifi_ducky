@@ -11,26 +11,31 @@ int defaultDelay = 0;
 void Line(String _line) {
   int firstSpace = _line.indexOf(" ");
   if (firstSpace == -1) {
+    // Not a command, so likely a single key press
     Press(_line);
   } else if (_line.substring(0, firstSpace) == "STRING") {
+    // Type out characters
     for (int i = firstSpace + 1; i < _line.length(); i++)
       Keyboard.write(_line[i]);
   } else if (_line.substring(0, firstSpace) == "DELAY") {
+    // Pause in milliseconds
     int delaytime = _line.substring(firstSpace + 1).toInt();
     delay(delaytime);
   } else if (_line.substring(0, firstSpace) == "DEFAULTDELAY") {
+    // Define how long to wait between each subsequent command in ms
     defaultDelay = _line.substring(firstSpace + 1).toInt();
   } else if (_line.substring(0, firstSpace) == "REM") {
-    // nothing :/
+    // Line is a comment
   } else if (_line.substring(0, firstSpace) == "REPLAY") {
+    // Repeats the last command n times
     int replaynum = _line.substring(firstSpace + 1).toInt();
     while (replaynum) {
       Line(last);
       --replaynum;
     }
   } else {
+    // Multi-key press (ex: CTRL ALT DEL)
     String remain = _line;
-
     while (remain.length() > 0) {
       int latest_space = remain.indexOf(" ");
       if (latest_space == -1) {
