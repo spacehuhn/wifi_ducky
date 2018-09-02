@@ -6,12 +6,29 @@
 
 String bufferStr = "";
 String last = "";
+int firstSpace;
+int secondSpace;
+String command = "";
+String arg1 = "";
+String arg2 = "";
 
 int defaultDelay = 0;
 
 void Line(String _line) {
-  int firstSpace = _line.indexOf(" ");
-  String command = _line.substring(0, firstSpace);
+  // Split line into command and optional arguments
+  firstSpace = _line.indexOf(" ");
+  command = _line.substring(0, firstSpace);
+  arg1 = "";
+  arg2 = "";
+  if (firstSpace != -1) {
+    arg1 = _line.substring(firstSpace + 1);
+    secondSpace = arg1.indexOf(" ");
+    if (secondSpace != -1) {
+      arg2 = arg1.substring(secondSpace + 1);
+      arg1 = arg1.substring(0, secondSpace);
+    }
+  }
+
   if (firstSpace == -1) {
     // Not a command, so likely a single key press
     Press(_line);
@@ -21,16 +38,16 @@ void Line(String _line) {
       Keyboard.write(_line[i]);
   } else if (command == "DELAY") {
     // Pause in milliseconds
-    int delaytime = _line.substring(firstSpace + 1).toInt();
+    int delaytime = arg1.toInt();
     delay(delaytime);
   } else if (command == "DEFAULTDELAY" || command == "DEFAULT_DELAY") {
     // Define how long to wait between each subsequent command in ms
-    defaultDelay = _line.substring(firstSpace + 1).toInt();
+    defaultDelay = arg1.toInt();
   } else if (command == "REM") {
     // Line is a comment
   } else if (command == "REPLAY") {
     // Repeats the last command n times
-    int replaynum = _line.substring(firstSpace + 1).toInt();
+    int replaynum = arg1.toInt();
     while (replaynum) {
       Line(last);
       --replaynum;
