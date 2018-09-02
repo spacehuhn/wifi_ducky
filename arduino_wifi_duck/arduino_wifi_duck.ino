@@ -46,6 +46,9 @@ void Line(String _line) {
 
   Keyboard.releaseAll();
   delay(defaultDelay);
+
+  // Save this line for next loop, as it may use REPLAY
+  last = _line;
 }
 
 void Press(String b) {
