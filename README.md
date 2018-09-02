@@ -175,9 +175,9 @@ Happy hacking :)
 My wishlist:
 - add support for Digispark (ATtiny85) as alternative for the ATmega32u4 Arduino
 - change settings within the web interface (Wi-Fi SSID, password etc.)
-- full support of all Ducky Script commands (DEFAULTDELAY is missing)
+- ~~full support of all Ducky Script commands (DEFAULTDELAY is missing)~~
 - auto execute scripts
-- add mouse
+- ~~add mouse~~
 - control over the internet
 
 ## License
@@ -196,3 +196,27 @@ Seytonic: http://youtube.com/seytonic
 Arduino Ducky Script interpreter: https://github.com/Seytonic/Duckduino-microSD
 
 Cnlohrs ESP8266 USB Software Driver: https://github.com/cnlohr/espusb
+
+## Additional credit
+Some of the features/changes applied were sourced from various other forks of the project. Cherry-picking proved complicated, so I am giving credit here.
+
+- @gloglas - https://github.com/gloglas/WifiDuckV2
+  - Did a rewrite/hard fork of the spacehuhn/wifi_ducky project
+  - Added mouse control
+  - Added ASCII characters
+  - Added OS Detection (unused here)
+  - ...and more.
+- @mvojacek - https://github.com/mvojacek/wifi_ducky
+  - Ported changes made by @gloglas back into a fork of the the original project
+- @BlueArduino20 - https://github.com/BlueArduino20/super_wifi_ducky
+  - Partially fixed the payload corruption issue
+  - Added "STRING." command (here, renamed to STRINGER)
+  - Added various missing key string/ids, new HID keys
+- @Brayyy - https://github.com/Brayyy/wifi_ducky
+  - Brought various forks together
+  - Fixed payload corruption issue, added payload verification bytes
+  - Fixed baud issues
+  - Improved payload speed
+  - Standardized project line-endings, indention and formatting
+  - Fixed REPLAY command
+  - Other minor code refactoring
