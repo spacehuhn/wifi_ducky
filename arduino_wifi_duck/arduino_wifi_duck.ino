@@ -37,6 +37,11 @@ void Line(String _line) {
     // Type out characters
     for (int i = firstSpace + 1; i < _line.length(); i++)
       Keyboard.write(_line[i]);
+  } else if (command == "STRINGEN") {
+    // Type out characters, then press enter
+    for (int i = firstSpace + 1; i < _line.length(); i++)
+      Keyboard.write(_line[i]);
+    Keyboard.press(KEY_RETURN);
   } else if (command == "DELAY") {
     // Pause in milliseconds
     int delaytime = arg1.toInt();
@@ -53,6 +58,9 @@ void Line(String _line) {
       Line(last);
       --replaynum;
     }
+  } else if (command == "ASCII"){
+    // Enter character using ascii number
+    Keyboard.write(arg1.toInt());
   } else if (command == "SCROLL") {
     // Mouse scroll wheel
     Mouse.move(0, 0, arg1.toInt());
