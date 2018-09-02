@@ -2,6 +2,7 @@
 #define BAUD_RATE 57600
 
 #define ExternSerial Serial1
+#define KEY_PAUSE (76+136)
 
 String bufferStr = "";
 String last = "";
@@ -10,23 +11,24 @@ int defaultDelay = 0;
 
 void Line(String _line) {
   int firstSpace = _line.indexOf(" ");
+  String command = _line.substring(0, firstSpace);
   if (firstSpace == -1) {
     // Not a command, so likely a single key press
     Press(_line);
-  } else if (_line.substring(0, firstSpace) == "STRING") {
+  } else if (command == "STRING") {
     // Type out characters
     for (int i = firstSpace + 1; i < _line.length(); i++)
       Keyboard.write(_line[i]);
-  } else if (_line.substring(0, firstSpace) == "DELAY") {
+  } else if (command == "DELAY") {
     // Pause in milliseconds
     int delaytime = _line.substring(firstSpace + 1).toInt();
     delay(delaytime);
-  } else if (_line.substring(0, firstSpace) == "DEFAULTDELAY") {
+  } else if (command == "DEFAULTDELAY" || command == "DEFAULT_DELAY") {
     // Define how long to wait between each subsequent command in ms
     defaultDelay = _line.substring(firstSpace + 1).toInt();
-  } else if (_line.substring(0, firstSpace) == "REM") {
+  } else if (command == "REM") {
     // Line is a comment
-  } else if (_line.substring(0, firstSpace) == "REPLAY") {
+  } else if (command == "REPLAY") {
     // Repeats the last command n times
     int replaynum = _line.substring(firstSpace + 1).toInt();
     while (replaynum) {
@@ -62,10 +64,10 @@ void Press(String b) {
     return;
   }
   if (b.equals("ENTER")) Keyboard.press(KEY_RETURN);
-  else if (b.equals("CTRL")) Keyboard.press(KEY_LEFT_CTRL);
+  else if (b.equals("CTRL") || b.equals("CONTROL")) Keyboard.press(KEY_LEFT_CTRL);
   else if (b.equals("SHIFT")) Keyboard.press(KEY_LEFT_SHIFT);
   else if (b.equals("ALT")) Keyboard.press(KEY_LEFT_ALT);
-  else if (b.equals("GUI")) Keyboard.press(KEY_LEFT_GUI);
+  else if (b.equals("GUI") || b.equals("WINDOWS")) Keyboard.press(KEY_LEFT_GUI);
   else if (b.equals("UP") || b.equals("UPARROW")) Keyboard.press(KEY_UP_ARROW);
   else if (b.equals("DOWN") || b.equals("DOWNARROW")) Keyboard.press(KEY_DOWN_ARROW);
   else if (b.equals("LEFT") || b.equals("LEFTARROW")) Keyboard.press(KEY_LEFT_ARROW);
@@ -74,7 +76,7 @@ void Press(String b) {
   else if (b.equals("PAGEUP")) Keyboard.press(KEY_PAGE_UP);
   else if (b.equals("PAGEDOWN")) Keyboard.press(KEY_PAGE_DOWN);
   else if (b.equals("HOME")) Keyboard.press(KEY_HOME);
-  else if (b.equals("ESC")) Keyboard.press(KEY_ESC);
+  else if (b.equals("ESC") || b.equals("ESCAPE")) Keyboard.press(KEY_ESC);
   else if (b.equals("BACKSPACE")) Keyboard.press(KEY_BACKSPACE);
   else if (b.equals("INSERT")) Keyboard.press(KEY_INSERT);
   else if (b.equals("TAB")) Keyboard.press(KEY_TAB);
@@ -93,6 +95,11 @@ void Press(String b) {
   else if (b.equals("F11")) Keyboard.press(KEY_F11);
   else if (b.equals("F12")) Keyboard.press(KEY_F12);
   else if (b.equals("SPACE")) Keyboard.press(' ');
+  else if (b.equals("PAUSE") || b.equals("BREAK")) Keyboard.press(KEY_PAUSE);
+  else if (b.equals("APP") || b.equals("MENU")) {
+    Keyboard.press(KEY_LEFT_SHIFT);
+    Keyboard.press(KEY_F10);
+  }
   // else Serial.println("not found :'"+b+"'("+String(b.length())+")");
 }
 
