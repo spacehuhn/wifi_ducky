@@ -423,7 +423,8 @@ void loop() {
       // Grab a single character from the script
       uint8_t nextChar = script.read();
       // if(debug) Serial.write(nextChar);
-      if (nextChar == 0x0D) {
+      // 0x0D Carriage return, 0x0A Line feed, new line
+      if (nextChar == 0x0D || nextChar == 0x0A) {
         if (debug) Serial.println("[E] shipping... hit a carriage return");
         sendBuffer();
       } else {
