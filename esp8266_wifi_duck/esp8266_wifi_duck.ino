@@ -68,7 +68,7 @@ void handleUpload(AsyncWebServerRequest *request, String filename, size_t index,
 
   if (final) {  // upload finished
     if (debug) {
-      Serial.printf("UploadEnd: %s, %u B\n", filename.c_str(), index + len);
+      Serial.printf("[E] UploadEnd: %s, %u B\n", filename.c_str(), index + len);
     }
     f.close();
   }
@@ -97,8 +97,8 @@ void setup() {
   Serial.begin(BAUD_RATE);
   delay(2000);
   if (debug)
-    Serial.println("\nstarting...\nSSID: " + (String)ssid +
-                   "\nPassword: " + (String)password);
+    Serial.println("\n[E] starting...\n[E] SSID: " + (String)ssid +
+                   "\n[E] Password: " + (String)password);
 
   EEPROM.begin(4096);
   SPIFFS.begin();
@@ -184,19 +184,19 @@ void setup() {
       String _ssid = request->arg("ssid");
       settings.ssidLen = _ssid.length();
       _ssid.toCharArray(settings.ssid, 32);
-      if (debug) Serial.println("new SSID = '" + _ssid + "'");
+      if (debug) Serial.println("[E] new SSID = '" + _ssid + "'");
     }
     if (request->hasArg("pswd")) {
       String _pswd = request->arg("pswd");
       settings.passwordLen = _pswd.length();
       _pswd.toCharArray(settings.password, 32);
-      if (debug) Serial.println("new password = '" + _pswd + "'");
+      if (debug) Serial.println("[E] new password = '" + _pswd + "'");
     }
     if (request->hasArg("autostart")) {
       String _autostart = request->arg("autostart");
       settings.autostartLen = _autostart.length();
       _autostart.toCharArray(settings.autostart, 32);
-      if (debug) Serial.println("new autostart = '" + _autostart + "'");
+      if (debug) Serial.println("[E] new autostart = '" + _autostart + "'");
     }
     if (request->hasArg("ch")) settings.channel = request->arg("ch").toInt();
     if (request->hasArg("hidden")) {
@@ -360,7 +360,7 @@ void setup() {
       [](AsyncWebServerRequest *request, String filename, size_t index,
          uint8_t *data, size_t len, bool final) {
         if (!index) {
-          if (debug) Serial.printf("Update Start: %s\n", filename.c_str());
+          if (debug) Serial.printf("[E] Update Start: %s\n", filename.c_str());
           Update.runAsync(true);
           if (!Update.begin((ESP.getFreeSketchSpace() - 0x1000) & 0xFFFFF000)) {
             if (debug) Update.printError(Serial);
@@ -373,7 +373,7 @@ void setup() {
         }
         if (final) {
           if (Update.end(true)) {
-            if (debug) Serial.printf("Update Success: %uB\n", index + len);
+            if (debug) Serial.printf("[E] Update Success: %uB\n", index + len);
           } else {
             if (debug) Update.printError(Serial);
           }
@@ -382,11 +382,11 @@ void setup() {
 
   server.begin();
 
-  if (debug) Serial.println("started");
+  if (debug) Serial.println("[E] started");
 }
 
 void sendBuffer() {
-  if (debug) Serial.println("sendBuffer()");
+  if (debug) Serial.println("[E] sendBuffer()");
   Serial.write(0x02);  // 0x02 Start of text
   for (int i = 0; i < lc; i++) Serial.write((char)scriptLineBuffer[i]);
   Serial.write(0x03);  // 0x03 End of text
@@ -402,7 +402,7 @@ void loop() {
     uint8_t answer = Serial.read();
     // 0x06 = acknowledge
     if (answer == 0x06) {
-      if (debug) Serial.println("got acknowledge from Arduino");
+      if (debug) Serial.println("[E] got acknowledge from Arduino");
       runLine = true;
       waitToSend = false;
     } else {
@@ -419,19 +419,19 @@ void loop() {
   if (runScript && !waitToSend) {
     // The script file exists and is not .read() complete
     if (script.available()) {
-      // Serial.println("script.available");
+      // Serial.println("[E] script.available");
       // Grab a single character from the script
       uint8_t nextChar = script.read();
       // if(debug) Serial.write(nextChar);
       if (nextChar == 0x0D) {
-        if (debug) Serial.println("shipping... hit a carriage return");
+        if (debug) Serial.println("[E] shipping... hit a carriage return");
         sendBuffer();
       } else {
         scriptLineBuffer[lc] = nextChar;
         lc++;
       }
     } else {
-      // if (debug) Serial.println("!script.available");
+      // if (debug) Serial.println("[E] !script.available");
       if (lc > 0) sendBuffer();
       runScript = false;
       waitToSend = true;

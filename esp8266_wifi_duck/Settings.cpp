@@ -3,7 +3,7 @@
 Settings::Settings() {}
 
 void Settings::load() {
-  if (debug) Serial.println("\nLoad Settings");
+  if (debug) Serial.println("\n[E] Load Settings");
 
   ssidLen = EEPROM.read(ssidLenAdr);
   if (ssidLen < 0 || ssidLen > 32) {
@@ -36,7 +36,7 @@ void Settings::load() {
 }
 
 void Settings::save() {
-  if (debug) Serial.println("Save Settings");
+  if (debug) Serial.println("[E] Save Settings");
 
   EEPROM.write(ssidLenAdr, ssidLen);
   for (int i = 0; i < ssidLen; i++) {
@@ -58,7 +58,7 @@ void Settings::save() {
 }
 
 void Settings::reset() {
-  if (debug) Serial.println("Reset Settings");
+  if (debug) Serial.println("[E] Reset Settings");
 
   String _ssid = "WiFi Duck";
   _ssid.toCharArray(ssid, 32);
@@ -80,11 +80,11 @@ void Settings::reset() {
 }
 
 void Settings::print() {
-  Serial.println("\nSettings:");
-  Serial.println("SSID = " + (String)ssid);
-  Serial.println("Password = " + (String)password);
-  Serial.println("Channel = " + (String)channel);
-  Serial.println("Hidden SSID = " + (String)hidden);
-  Serial.println("auto. Execute = " + (String)autoExec);
-  Serial.println("Autoscript = '" + (String)autostart + "'");
+  Serial.println("\n[E] Settings:");
+  Serial.println("[E] SSID = " + (String)ssid);
+  Serial.println("[E] Password = " + (String)password);
+  Serial.println("[E] Channel = " + (String)channel);
+  Serial.println("[E] Hidden SSID = " + (String)hidden);
+  Serial.println("[E] auto. Execute = " + (String)autoExec);
+  Serial.println("[E] Autoscript = '" + (String)autostart + "'");
 }

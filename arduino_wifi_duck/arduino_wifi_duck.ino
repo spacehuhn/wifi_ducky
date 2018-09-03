@@ -148,7 +148,7 @@ void Press(String b) {
   else if (b.equals("RELEASE") || b.equals("RELEASE_LEFT") || b.equals("MOUSE_RELEASE_LEFT") || b.equals("MOUSE_RELEASE")) Mouse.release();
   else if (b.equals("RELEASE_RIGHT") || b.equals("MOUSE_RELEASE_RIGHT")) Mouse.release(MOUSE_RIGHT);
   else if (b.equals("RELEASE_MIDDLE") || b.equals("MOUSE_RELEASE_MIDDLE")) Mouse.release(MOUSE_MIDDLE);
-  // else Serial.println("not found :'"+b+"'("+String(b.length())+")");
+  // else Serial.println("[A] not found :'"+b+"'("+String(b.length())+")");
 }
 
 void setup() {
@@ -167,9 +167,10 @@ void loop() {
     // 0x0D = carriage return
     bufferStr = ExternSerial.readStringUntil(0x0D);
     bufferStr.trim();
-    // Serial.println("---bufferStr---");
+    // Serial.println("[A] ---bufferStr---");
+    // Serial.print("[A]");
     // Serial.println(bufferStr);
-    // Serial.println("---------------");
+    // Serial.println("[A] ---------------");
   }
 
   int bufLen = bufferStr.length();
@@ -178,13 +179,17 @@ void loop() {
     if (bufferStr.charAt(0) == 0x02 && bufferStr.charAt(bufLen - 1) == 0x03) {
       // Strip off verification chars
       bufferStr = bufferStr.substring(1, bufLen - 1);
-      Serial.print("run: ");
+      Serial.print("[A] run: ");
       Serial.println(bufferStr);
       Line(bufferStr);
-      // Serial.println("line done");
+      // Serial.println("[A] line done");
       ExternSerial.write(0x06); // acknowledge
+    } else if (bufferStr.substring(0, 3) == "[E]") {
+      // Print passed debug messages from the ESP
+      Serial.println(bufferStr);
     } else {
-      // Serial.print("Ignoring non-Ducky line:");
+      // Something else... just ignore it, but show what it was
+      Serial.print("[A] ignore:");
       Serial.println(bufferStr);
     }
     bufferStr = "";
