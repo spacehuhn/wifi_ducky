@@ -1,4 +1,6 @@
-# Wi-Fi Ducky
+# > [New Version](https://github.com/spacehuhn/WiFiDuck)
+
+## Wi-Fi Ducky
 Upload, save and run keystroke injections remotely with an ESP8266 + ATmega32u4
 
 ![image of my DIY Wi-Fi Duck](https://raw.githubusercontent.com/spacehuhn/wifi_ducky/master/images/my_wifi_duck.jpg)
