@@ -1,7 +1,9 @@
 ---
 
-# > [Click here for the new Version 'WiFi Duck'](https://github.com/spacehuhn/WiFiDuck)
+# > ⚠️ [Click here for the new Version 'WiFi Duck'](https://github.com/spacehuhn/WiFiDuck)
 
+The WiFi **Duck** (no *y*) is an entirely new project and uses different connections between the Atmega32u4 and ESP8266.
+ 
 ---
 
 ## Wi-Fi Ducky
