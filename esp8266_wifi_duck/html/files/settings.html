@@ -31,15 +31,15 @@
 				<form action="settings.html" method="POST">
 					<h4>Wi-Fi</h4>
 					<div class="row">
-						<div class="six columns left"> 
-							<label for="ssid">SSID: </label> 
+						<div class="six columns left">
+							<label for="ssid">SSID: </label>
 						</div>
 						<div class="six columns left">
 							<input type="text" value="WiFi Duck" id="ssid" name="ssid" maxlength="32" minlength="1"/>
 						</div>
 					</div>
 					<div class="row">
-						<div class="six columns left"> 
+						<div class="six columns left">
 							<label for="pswd">Password: </label>
 							<p>Min. length 8 chars</p>
 						</div>
@@ -48,7 +48,7 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="six columns left"> 
+						<div class="six columns left">
 							<label for="ch">Channel: </label>
 						</div>
 						<div class="six columns left">
@@ -56,17 +56,17 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="six columns left"> 
+						<div class="six columns left">
 							<label for="hidden">Hidden: </label>
 						</div>
 						<div class="six columns left">
 							<input type="checkbox" id="hidden" name="hidden" value="enabled" />
 						</div>
-					</div>	
+					</div>
 					<br />
 					<h4>Attack Settings</h4>
 					<div class="row">
-						<div class="six columns left"> 
+						<div class="six columns left">
 							<label for="autoExec">Enable Script Execution on Startup: </label>
 						</div>
 						<div class="six columns left">
@@ -74,7 +74,7 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="six columns left"> 
+						<div class="six columns left">
 							<label for="autostart">Auto-Script Name: </label>
 							<p>(The one to execute on startup)</p>
 						</div>
@@ -82,12 +82,9 @@
 							<input type="text" minlength="1" maxlength="32" value="autostart.txt" id="autostart" name="autostart" />
 						</div>
 					</div>
-					
 					<br />
 					<br />
-					
 					<input type="submit" class="button-primary right" value="save" />
-					
 				</form>
 				<br />
 				<br />
@@ -95,16 +92,14 @@
 				<button class="left margin-left" onclick="reset()">reset</button>
 			</div>
 		</div>
-		
+
 		<script>
-			
 			function set(e,v) document.getElementById(e).value = v;
 			function setChecked(e) document.getElementById(e).setAttribute('checked','checked');
-			
+
 			function loadSettings(){
 				getResponse("settings.json",function(responseText){
 					var res = JSON.parse(responseText);
-					
 					set("ssid",res.ssid);
 					set("pswd",res.password);
 					set("ch",res.channel);
@@ -114,22 +109,20 @@
 					if(res.autoExec) setChecked("autoExec");
 				});
 			}
-			
+
 			loadSettings();
-			
+
 			function restart(){
 				getResponse("restart",function(responseText){},function(){
 					document.getElementById("error").innerHTML = "device is restarting";
 				},1000);
-				
 			}
-			
+
 			function reset(){
 				getResponse("reset",function(responseText){
 					loadSettings();
 				});
 			}
-			
 		</script>
 	</body>
 </html>
